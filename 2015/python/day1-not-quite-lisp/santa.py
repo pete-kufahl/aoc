@@ -18,11 +18,22 @@ For example:
 ))((((( also results in floor 3.
 ()) and ))( both result in floor -1 (the first basement level).
 ))) and )())()) both result in floor -3.
-To what floor do the instructions take Santa?
+PART 1: To what floor do the instructions take Santa?
+
+Now, given the same instructions, find the position of the first character that causes him to enter the basement (floor -1). The first character in the instructions has position 1, the second character has position 2, and so on.
+
+For example:
+
+) causes him to enter the basement at character position 1.
+()()) causes him to enter the basement at character position 5.
+PART 2: What is the position of the character that causes Santa to first enter the basement?
+
 """
 
 if __name__ == "__main__":
     ret, num = 0, 0
+    basement = False
+
     with open('input.txt') as f:
         while True:
             char = f.read(1)          
@@ -32,6 +43,9 @@ if __name__ == "__main__":
                 ret += 1
             elif char == ')':
                 ret -= 1
+                if ret == -1 and not basement:
+                    print (f'basement entered at position {num+1}')
+                    basement = True
             else:
                 pass
             num += 1
