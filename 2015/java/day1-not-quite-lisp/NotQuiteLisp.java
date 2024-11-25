@@ -53,7 +53,7 @@ public class NotQuiteLisp {
         boolean basement = false;
             
         try {
-            inputStream = new FileReader("../../python/day1-not-quite-lisp/input.txt");
+            inputStream = new FileReader("input.txt");
             int c;
             while ((c = inputStream.read()) != -1) {
                 // System.out.println(c);
