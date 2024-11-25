@@ -1,6 +1,7 @@
 /*
 * > clang --version
-* > 
+* > clang++ -std=c++17 hello.cpp -o exec/hello
+* > exec/hello
 */
 
 #include <iostream>

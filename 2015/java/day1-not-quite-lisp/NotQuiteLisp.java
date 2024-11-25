@@ -28,6 +28,8 @@ For example:
 ()()) causes him to enter the basement at character position 5.
 PART 2: What is the position of the character that causes Santa to first enter the basement?
 
+ * > javac NotQuiteLisp.java
+ * > java NotQuiteLisp
  */
 
 import java.io.FileReader;
