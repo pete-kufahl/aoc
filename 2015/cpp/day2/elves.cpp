@@ -33,12 +33,12 @@ int computeRibbon(int a, int b, int c) {
 }
 
 int main() {
-    string filename = "input.txt";  // Input file name
-    ifstream file(filename);       // Open the file
+    string filename = "input.txt";
+    ifstream file(filename);
 
     if (!file.is_open()) {
         cerr << "Error opening file: " << filename << endl;
-        return 1;  // Exit if file couldn't be opened
+        return 1;
     }
 
     string line;
@@ -56,14 +56,12 @@ int main() {
             dims.push_back(stoi(part));  // Convert string to integer and store in vector
         }
 
-        // Ensure that the line contains exactly 3 integers
         if (dims.size() == 3) {
             gifts += 1;
             int a = dims[0];
             int b = dims[1];
             int c = dims[2];
 
-            // Process the integers with the two functions
             totalPaper += computePaper(a, b, c);
             totalRibbon += computeRibbon(a, b, c);
         } else {
@@ -71,10 +69,8 @@ int main() {
         }
     }
 
-    // Close the file
     file.close();
 
-    // Print the accumulated results
     cout << "Number of Gifts: " << gifts << endl;
     cout << "Total Paper: " << totalPaper << endl;
     cout << "Total Robbon: " << totalRibbon << endl;
