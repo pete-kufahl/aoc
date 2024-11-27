@@ -3,7 +3,7 @@ advent of code puzzles
 repo is private by request of Advent of Code authors.
 
 ## programming languages, by puzzle year
-## 2015 <img src="./logos/python-logo.svg" height="20"> <img src="./logos/cpp-logo.svg" height="20"> <img src="./logos/java-logo.svg" height="20"> <img src="./logos/node-logo.svg" height="20"> <img src="./logos/rust-logo.svg" height="20">
+* **2015** &nbsp;<img src="./logos/python-logo.svg" height="20"> <img src="./logos/cpp-logo.svg" height="20"> <img src="./logos/java-logo.svg" height="20"> <img src="./logos/node-logo.svg" height="20"> <img src="./logos/rust-logo.svg" height="20">
 
 
 ## progress
@@ -12,7 +12,7 @@ repo is private by request of Advent of Code authors.
 |-----------------------------------|------|--------|---------|-----|---------|
 | 2015 - 1: Santa on a lift         | ✅   | ✅     | ✅      | ✅  | ✅      |
 | 2015 - 2: XMas wrapping           | ✅   | ✅     | ✅      | ✅  | ✅      |
-| Box Surface Area Calculator       |      |        |         |     |         |
+| 2015 - 3: Visiting houses         | ✅   | ✅     | ✅      | ✅  |         |
 | Find Prime Numbers                |      |        |         |     |         |
 | Fibonacci Sequence                |      |        |         |     |         |
 | Read File and Process Data        |      |        |         |     |         |
