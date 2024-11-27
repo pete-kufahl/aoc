@@ -3,7 +3,7 @@ advent of code puzzles
 repo is private by request of Advent of Code authors.
 
 ## programming languages, by puzzle year
-## 2015 <img src="./logos/python-logo.svg" height="20"> <img src="./logos/cpp-logo.svg" height="20"> <img src="./logos/java-logo.svg" height="20"> <img src="./logos/node-logo.svg" height="20"> <img src="./logos/rust-logo.svg" height="20">
+* **2015** &nbsp;<img src="./logos/python-logo.svg" height="20"> <img src="./logos/cpp-logo.svg" height="20"> <img src="./logos/java-logo.svg" height="20"> <img src="./logos/node-logo.svg" height="20"> <img src="./logos/rust-logo.svg" height="20">
 
 
 ## progress
