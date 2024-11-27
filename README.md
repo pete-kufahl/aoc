@@ -11,7 +11,7 @@ repo is private by request of Advent of Code authors.
 | Program Title                     | Java | Python | Node.js | C++ | Rust |
 |-----------------------------------|------|--------|---------|-----|---------|
 | 2015 - 1: Santa on a lift         | ✅   | ✅     | ✅      | ✅  | ✅      |
-| 2015 - 2: XMas wrapping           | ✅   | ✅     | ✅      | ⏳  | ⏳      |
+| 2015 - 2: XMas wrapping           | ✅   | ✅     | ✅      | ✅  | ✅      |
 | Box Surface Area Calculator       |      |        |         |     |         |
 | Find Prime Numbers                |      |        |         |     |         |
 | Fibonacci Sequence                |      |        |         |     |         |
