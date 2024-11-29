@@ -22,7 +22,6 @@ if __name__ == "__main__":
                 doubleletter = False
                 disqualified = False
                 for i in range(1, len(charlist), 1):
-                    # print((charlist[i-1], charlist[i]), charlist[i-1] + charlist[i], 'True' if charlist[i-1] + charlist[i] in disqual else 'False')
                     if charlist[i-1] + charlist[i] in disqual:
                         disqualified = True
                         break
