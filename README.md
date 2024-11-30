@@ -13,9 +13,9 @@ repo is private by request of Advent of Code authors.
 | 2015 - 1: Santa on a lift         | ✅   | ✅     | ✅      | ✅  | ✅      |
 | 2015 - 2: XMas wrapping           | ✅   | ✅     | ✅      | ✅  | ✅      |
 | 2015 - 3: Visiting houses         | ✅   | ✅     | ✅      | ✅  |         |
-| 2015 - 4: Coin hashes             |      | ✅      |         |     |         |
-| 2015 - 5: Finding nice strings    |      | ⏳     |         |     |         |
-| Read File and Process Data        |      |        |         |     |         |
+| 2015 - 4: Coin hashes             |      | ✅     |         |     |         |
+| 2015 - 5: Finding nice strings    |      | ✅     |         |     |         |
+| 2015 - 6: A thousand lights       |      | ⏳      |         |     |         |
 
 ### Legend
 
