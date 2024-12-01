@@ -3,7 +3,7 @@ import numpy as np
 if __name__ == "__main__":
 
     file_name = "input.txt"
-    grid = np.full((1000, 1000), False)
+    grid = np.full((1000, 1000), 0)
     instrs = 0
     try:
         with open(file_name, 'r') as file:
@@ -24,11 +24,11 @@ if __name__ == "__main__":
                         if parts[1] == 'on':
                             for x in range(x0, x1+1):
                                 for y in range(y0, y1 + 1):
-                                    grid[x, y] = True
+                                    grid[x, y] = grid[x, y] + 1
                         elif parts[1] == 'off':
                             for x in range(x0, x1+1):
                                 for y in range(y0, y1 + 1):
-                                    grid[x, y] = False
+                                    grid[x, y] = max(0, grid[x, y] - 1)
                         else:
                             raise RuntimeError('unknown turn on/off/? line', line)
                     elif parts[0] == 'toggle':
@@ -40,12 +40,12 @@ if __name__ == "__main__":
                         y1 = int(end[1])
                         for x in range(x0, x1+1):
                                 for y in range(y0, y1 + 1):
-                                    grid[x, y] = not grid[x, y]
+                                    grid[x, y] = grid[x, y] + 2
                     else:
                         raise RuntimeError('unknown line', line)
                     
-        count = np.count_nonzero(grid)
-        print(f'after {instrs} instructions, {count} lights on')
+        total = np.sum(grid)
+        print(f'after {instrs} instructions, {total} total brightness level')
 
     except FileNotFoundError:
         print(f"The file {file_name} was not found.")
