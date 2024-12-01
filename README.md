@@ -1,6 +1,8 @@
 # aoc
-advent of code puzzles
-repo is private by request of Advent of Code authors.
+my solutions to Advent of Code puzzles
+
+instructions and input files (which I downloaded and made symbolic links to) are NOT included here, and can be found at https://adventofcode.com/
+
 
 ## programming languages, by puzzle year
 * **2015** &nbsp;<img src="./logos/python-logo.svg" height="20"> <img src="./logos/cpp-logo.svg" height="20"> <img src="./logos/java-logo.svg" height="20"> <img src="./logos/node-logo.svg" height="20"> <img src="./logos/rust-logo.svg" height="20">
@@ -8,7 +10,7 @@ repo is private by request of Advent of Code authors.
 
 ## progress
 
-| Program Title                     | Java | Python | Node.js | C++ | Rust |
+| Puzzle                    | Java | Python | Node.js | C++ | Rust |
 |-----------------------------------|------|--------|---------|-----|---------|
 | 2015 - 1: Santa on a lift         | ✅   | ✅     | ✅      | ✅  | ✅      |
 | 2015 - 2: XMas wrapping           | ✅   | ✅     | ✅      | ✅  | ✅      |
