@@ -16,6 +16,7 @@ repo is private by request of Advent of Code authors.
 | 2015 - 4: Coin hashes             |      | ✅     |         |     |         |
 | 2015 - 5: Finding nice strings    |      | ✅     |         |     |         |
 | 2015 - 6: A thousand lights       |      | ✅     |         |     |         |
+| 2015 - 7: Logic gates and wires   |      | ✅     |         |     |         |
 
 ### Legend
 
