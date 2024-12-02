@@ -1,8 +1,9 @@
 ## progress
 
-| Puzzle                    | Java | Python | Node.js | C++ | Rust |
+| Puzzle                            | Java | Python | Node.js | C++ | Rust |
 |-----------------------------------|------|--------|---------|-----|---------|
-| 2024 - 1: Distance between lists  |      | ✅     |         |     |         |
+| 2024 - 1: Distance between lists  | ✅   | ✅     |         |     |         |
+| 2024 - 2: Radiation levels        | ⏳   | ✅     |         |     |         |
 
 ### Legend
 
