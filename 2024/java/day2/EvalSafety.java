@@ -9,28 +9,28 @@ import java.util.stream.IntStream;
 public class EvalSafety {
 
     private static boolean check_line(List<Integer> levels, int lo, int hi) {
-        boolean rule1 = monotonic_levels(levels);
-        boolean rule2 = rule1 && safe_differences(levels, lo, hi);
-        return rule2;
-    }
+        
+        // track monotonicity direction
+        Boolean increasing = null;
 
-    private static boolean monotonic_levels(List<Integer> levels) {
-        boolean increasing = false;
-        for (int i=1; i < levels.size(); i++) {
-            if (i == 1) {
-                increasing = levels.get(1) > levels.get(0);
-            } else {
-                if (increasing && levels.get(i) <= levels.get(i-1)) return false;
-                if (!increasing && levels.get(i) >= levels.get(i-1)) return false;
+        for (int i = 1; i < levels.size(); i++) {
+            int diff = levels.get(i) - levels.get(i - 1);
+
+            // difference versus bounds
+            if (Math.abs(diff) < lo || Math.abs(diff) > hi) {
+                return false;
             }
-        }
-        return true;
-    }
 
-    private static boolean safe_differences(List<Integer> levels, int lo, int hi) {
-        for (int i=1; i < levels.size(); i++) {
-            int diff = Math.abs(levels.get(i) - levels.get(i-1));
-            if (diff < lo || diff > hi) return false;
+            // determine or validate monotonicity
+            if (increasing == null) {
+                if (diff != 0) {
+                    increasing = diff > 0;
+                }
+            } else {
+                if ((increasing && diff < 0) || (!increasing && diff > 0)) {
+                    return false;
+                }
+            }
         }
         return true;
     }

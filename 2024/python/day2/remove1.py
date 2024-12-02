@@ -1,29 +1,31 @@
 import sys
 
 def check_line(levels, lo, hi) -> int:
-    rule1 = monotonic_levels(levels)
-    rule2 = rule1 and safe_differences(levels, lo=lo, hi=hi)
-    return 1 if rule2 else 0
+    return 1 if validate_levels(levels, lo=lo, hi=hi) else 0
 
-def monotonic_levels(levels) -> bool:
-    increasing = False
-    for i in range(1, len(levels)):
-        if i == 1:
-            increasing = levels[i] > levels[i-1]
-        else:
-            if increasing and levels[i] <= levels[i-1]:
-                return False
-            if (not increasing) and levels[i] >= levels[i-1]:
-                return False 
-    return True
+def validate_levels(levels, lo, hi) -> bool:
+    """
+    check differences against range and monotonicity in a single pass through
+    the numbers list (levels)
+    """
+    increasing = None  # determine the direction during the first comparison
 
-def safe_differences(levels, lo, hi) -> bool:
     for i in range(1, len(levels)):
-        diff = abs(levels[i] - levels[i-1])
-        if diff < lo or diff > hi:
+        diff = levels[i] - levels[i - 1]
+        
+        # difference versus bounds
+        if abs(diff) < lo or abs(diff) > hi:
             return False
+        
+        # determine/validate monotonicity
+        if increasing is None:
+            if diff != 0:
+                increasing = diff > 0
+        else:
+            if (increasing and diff < 0) or (not increasing and diff > 0):
+                return False
+            
     return True
-
 if __name__ == "__main__":
 
     file_name = "input.txt"
