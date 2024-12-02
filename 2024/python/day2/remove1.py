@@ -45,10 +45,7 @@ if __name__ == "__main__":
                     ans = check_line(levels, lo=1, hi=3)
                     if ans == 0:
                         # attempt to make the line "safe" by removing one of the levels
-                        sublists = []
-                        for i in range(len(levels)):
-                            sublist = levels[:i] + levels[i+1:]
-                            sublists.append(sublist)
+                        sublists = [levels[:i] + levels[i+1:] for i in range(len(levels))]
                         for sublist in sublists:
                             ans = check_line(sublist, lo=1, hi=3)
                             if ans > 0:
