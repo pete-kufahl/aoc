@@ -21,6 +21,7 @@ function similarityOfLists(list1, list2) {
 
     // frequency map for list1
     list1.forEach(num => {
+        // instead of keyerror, missing value returns null
         freq1[num] = (freq1[num] || 0) + 1;
     });
     // frequency map for list2
