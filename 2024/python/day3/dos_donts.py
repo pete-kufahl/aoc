@@ -30,14 +30,15 @@ def process_3_patterns(file_path):
         # update current state if needed
         while len(states) > 0 and start > states[0][0]:
             current_state = states.pop(0)[1]
-            print(f'at position {start}, state updated to {current_state}')
+            # print(f'at position {start}, state updated to {current_state}')
 
         if current_state == "enable":
             x, y = match.groups()
-            print(f"At position {start}: X = {x}, Y = {y}")
+            # print(f"At position {start}: X = {x}, Y = {y}")
             sum_products += int(x) * int(y)
         else:
-            print('skipped ...')
+            # print('skipped ...')
+            pass
 
     return sum_products
 
