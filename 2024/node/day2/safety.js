@@ -63,7 +63,6 @@ function compareLists(filePath) {
     // Listen for each line and process it
     rl.on('line', (line) => {
         // Split the line by whitespace and convert the parts to integers
-        const [num1, num2] = line.trim().split(/\s+/).map(Number);
         levels = line.trim().split(/\s+/).map(Number);
 
         if (checkLine(levels, lo, hi)) {
