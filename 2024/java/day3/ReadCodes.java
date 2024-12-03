@@ -92,7 +92,6 @@ public class ReadCodes {
                 // System.out.println(event.type + "() at Position: " + event.position);
             }
         }
-
         System.out.println("total for " + (useDosDonts ? "Part 2: " : "Part 1: ") + subProducts);
     }
 
