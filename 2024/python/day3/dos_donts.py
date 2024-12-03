@@ -28,7 +28,7 @@ def process_3_patterns(file_path):
     for match in mul_matches:
         start = match.start()
         # update current state if needed
-        if len(states) > 0 and start > states[0][0]:
+        while len(states) > 0 and start > states[0][0]:
             current_state = states.pop(0)[1]
             print(f'at position {start}, state updated to {current_state}')
 
