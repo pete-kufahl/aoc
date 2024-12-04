@@ -42,35 +42,34 @@ int main(int argc, char* argv[]) {
 
     inputFile.close();
 
-    std::regex mul_pattern(R"(mul\((\d+),(\d+)\))");
-    std::regex do_pattern(R"(do\(\))");
-    std::regex dont_pattern(R"(don't\(\))");
+    regex mul_pattern(R"(mul\((\d+),(\d+)\))");
+    regex do_pattern(R"(do\(\))");
+    regex dont_pattern(R"(don't\(\))");
 
-    std::vector<Event> events;
-
-    std::smatch match;
-    size_t position = 0;
+    vector<Event> events;
     
     auto begin = input.cbegin();
     auto end = input.cend();
 
     // Collect 'do()' events
-    for (std::sregex_iterator it(begin, end, do_pattern), end_it; it != end_it; ++it) {
+    // end_it points to the position after the last match, as it's constructed with sregex_iterator()
+    for (sregex_iterator it(begin, end, do_pattern), end_it; it != end_it; ++it) {
         events.push_back(Event(it->position(), "do"));
     }
 
     // Collect 'don't()' events
-    for (std::sregex_iterator it(begin, end, dont_pattern), end_it; it != end_it; ++it) {
+    for (sregex_iterator it(begin, end, dont_pattern), end_it; it != end_it; ++it) {
         events.push_back(Event(it->position(), "don't"));
     }
 
     // Collect 'mul(X,Y)' events and extract X, Y values
-    for (std::sregex_iterator it(begin, end, mul_pattern), end_it; it != end_it; ++it) {
+    for (sregex_iterator it(begin, end, mul_pattern), end_it; it != end_it; ++it) {
         int x = stoi((*it)[1].str());
         int y = stoi((*it)[2].str());
         events.push_back(Event(it->position(), x, y));
     }
    
+    // sort events by position 
     std::sort(events.begin(), events.end(), [](const Event& a, const Event& b) {
         return a.position < b.position;
     });
@@ -80,11 +79,11 @@ int main(int argc, char* argv[]) {
         long sum_products = 0;
         for (const auto& event : events) {
             if (event.type == "do") {
-                std::cout << "do() at position " << event.position << "\n";
+                cout << "do() at position " << event.position << endl;
             } else if (event.type == "don't") {
-                std::cout << "don't() at position " << event.position << "\n";
+                cout << "don't() at position " << event.position << endl;
             } else if (event.type == "mul") {
-                std::cout << "mul(" << event.x << "," << event.y << ") at position " << event.position << "\n";
+                cout << "mul(" << event.x << "," << event.y << ") at position " << event.position << endl;
                 sum_products += event.x * event.y;
             }
         }
