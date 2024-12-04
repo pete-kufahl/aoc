@@ -1,9 +1,3 @@
-/*
-* > clang --version
-* > clang++ -std=c++17 comparelists.cpp -o exec/comparelists
-* > exec/comparelists
-*/
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -86,3 +80,9 @@ int main() {
 
     return 0;
 }
+
+/*
+* > clang --version
+* > clang++ -std=c++17 comparelists.cpp -o exec/comparelists
+* > exec/comparelists
+*/
