@@ -15,7 +15,7 @@ struct Event {
     int y = 0;
 
     // Constructor for 'do()' and 'don't()' events
-    Event(size_t pos, const std::string& t) : position(pos), type(t) {}
+    Event(size_t pos, const string& t) : position(pos), type(t) {}
 
     // Constructor for 'mul(X,Y)' event
     Event(size_t pos, int xVal, int yVal) : position(pos), type("mul"), x(xVal), y(yVal) {}
