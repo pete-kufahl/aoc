@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
     size_t position = 0;
     bool enabled = true;
     long sum_products = 0;
-    bool use_dos_donts = option == 1 ? false : true;
+    bool use_dos_donts = true;
 
     while (position < input.length()) {
         // Create a substring from the current position
@@ -67,32 +67,27 @@ int main(int argc, char* argv[]) {
 
         if (std::regex_search(subInput, match, mulPattern)) {
             // Match "mul(X,Y)"
-            Event event = {"mul", position + static_cast<size_t>(match.position()), {std::stoi(match[1]), std::stoi(match[2])}};
             if (enabled) {
-                processEvent(event);
+                cout << "mul(X, Y) at " << position << ", going to " << position + match.position() + match.length() << endl;
                 sum_products += stoi(match[1]) * stoi(match[2]);
             } else {
                 cout << "mul() skipped" << endl;
             }
-            position += static_cast<size_t>(match.position() + match.length());
+            position += match.position() + match.length();
         } else if (std::regex_search(subInput, match, doPattern)) {
             // Match "do()"
             cout << "DO" << endl;
-            Event event = {"do", position + static_cast<size_t>(match.position()), {}};
             if (use_dos_donts) {
-                processEvent(event);
                 enabled = true;
             }
-            position += static_cast<size_t>(match.position() + match.length());
-        } else if (use_dos_donts && std::regex_search(subInput, match, dontPattern)) {
+            position += match.position() + match.length();
+        } else if (std::regex_search(subInput, match, dontPattern)) {
             // Match "don't()"
             cout << "DONT" << endl;
-            Event event = {"dont", position + static_cast<size_t>(match.position()), {}};
             if (use_dos_donts) {
-                processEvent(event);
                 enabled = false;
             }
-            position += static_cast<size_t>(match.position() + match.length());
+            position += match.position() + match.length();
         } else {
             break; // No more matches
         }
