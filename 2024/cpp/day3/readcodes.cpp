@@ -11,20 +11,15 @@ using namespace std;
 struct Event {
     string type;        // "mul", "do", or "dont"
     size_t position;    // position in the input string
-    vector<int> values; // for "mul", store X and Y
+    int x = 0;          // Used only for 'mul' pattern
+    int y = 0;
+
+    // Constructor for 'do()' and 'don't()' events
+    Event(size_t pos, const std::string& t) : position(pos), type(t) {}
+
+    // Constructor for 'mul(X,Y)' event
+    Event(size_t pos, int xVal, int yVal) : position(pos), type("mul"), x(xVal), y(yVal) {}
 };
-
-void processEvent(const Event& event) {
-    // Example processing
-    cout << "Event Type: " << event.type
-              << ", Position: " << event.position;
-
-    if (event.type == "mul") {
-        cout << ", Values: (" << event.values[0] << ", " << event.values[1] << ")";
-    }
-
-    cout << endl;
-}
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -47,52 +42,68 @@ int main(int argc, char* argv[]) {
 
     inputFile.close();
 
-    std::regex mulPattern(R"(mul\((\d+),(\d+)\))");
-    // regex doPattern(R"(do\(\))"); // regex doPattern(R"(do\(\))");
-    // regex dontPattern(R"(don't\(\))"); // regex dontPattern(R"(don\'t\(\))");
+    std::regex mul_pattern(R"(mul\((\d+),(\d+)\))");
+    std::regex do_pattern(R"(do\(\))");
+    std::regex dont_pattern(R"(don't\(\))");
 
-    std::regex doPattern(R"(do\(\))");
-    std::regex dontPattern(R"(don't\(\))");
+    std::vector<Event> events;
 
-    // Search and process patterns
     std::smatch match;
     size_t position = 0;
-    bool enabled = true;
-    long sum_products = 0;
-    bool use_dos_donts = true;
+    
+    auto begin = input.cbegin();
+    auto end = input.cend();
 
-    while (position < input.length()) {
-        // Create a substring from the current position
-        std::string subInput = input.substr(position);
-
-        if (std::regex_search(subInput, match, mulPattern)) {
-            // Match "mul(X,Y)"
-            if (enabled) {
-                cout << "mul(X, Y) at " << position << ", going to " << position + match.position() + match.length() << endl;
-                sum_products += stoi(match[1]) * stoi(match[2]);
-            } else {
-                cout << "mul() skipped" << endl;
-            }
-            position += match.position() + match.length();
-        } else if (std::regex_search(subInput, match, doPattern)) {
-            // Match "do()"
-            cout << "DO" << endl;
-            if (use_dos_donts) {
-                enabled = true;
-            }
-            position += match.position() + match.length();
-        } else if (std::regex_search(subInput, match, dontPattern)) {
-            // Match "don't()"
-            cout << "DONT" << endl;
-            if (use_dos_donts) {
-                enabled = false;
-            }
-            position += match.position() + match.length();
-        } else {
-            break; // No more matches
-        }
+    // Collect 'do()' events
+    for (std::sregex_iterator it(begin, end, do_pattern), end_it; it != end_it; ++it) {
+        events.push_back(Event(it->position(), "do"));
     }
-    cout << "total for " << (use_dos_donts ? "part 2: " : "part1: ") << sum_products << endl;
 
+    // Collect 'don't()' events
+    for (std::sregex_iterator it(begin, end, dont_pattern), end_it; it != end_it; ++it) {
+        events.push_back(Event(it->position(), "don't"));
+    }
+
+    // Collect 'mul(X,Y)' events and extract X, Y values
+    for (std::sregex_iterator it(begin, end, mul_pattern), end_it; it != end_it; ++it) {
+        int x = stoi((*it)[1].str());
+        int y = stoi((*it)[2].str());
+        events.push_back(Event(it->position(), x, y));
+    }
+   
+    std::sort(events.begin(), events.end(), [](const Event& a, const Event& b) {
+        return a.position < b.position;
+    });
+
+    // Print the events in order
+    if (option == 1) {
+        long sum_products = 0;
+        for (const auto& event : events) {
+            if (event.type == "do") {
+                std::cout << "do() at position " << event.position << "\n";
+            } else if (event.type == "don't") {
+                std::cout << "don't() at position " << event.position << "\n";
+            } else if (event.type == "mul") {
+                std::cout << "mul(" << event.x << "," << event.y << ") at position " << event.position << "\n";
+                sum_products += event.x * event.y;
+            }
+        }
+        cout << "total for part 1: " << sum_products << endl;
+    }
+
+    if (option == 2) {
+        bool enabled = true;
+        long sum_products = 0;
+        for (const auto& event : events) {
+            if (event.type == "do") {
+                enabled = true;
+            } else if (event.type == "don't") {
+                enabled = false;
+            } else if (enabled && event.type == "mul") {
+                sum_products += event.x * event.y;
+            } 
+        }
+        cout << "total for part 2: " << sum_products << endl;
+    }
     return 0;
 }
