@@ -5,7 +5,7 @@
 | 2024 - 1: Distance between lists  | ✅   | ✅     |  ✅     | ✅  |         |
 | 2024 - 2: Radiation levels        | ✅   | ✅     |  🎯     | ✅  |         |
 | 2024 - 3: Process corrupted code  | ✅   | ✅     |  ✅     | ⏳  |         |
-| 2024 - 4: |      |       |       |     |         |
+| 2024 - 4: Word search             |      | ✅     |         |     |         |
 
 ### Legend
 
