@@ -50,7 +50,7 @@ def reorder_update(update, rules):
     applicable_rules = [(x, y) for x, y in rules if x in update_els and y in update_els]
    
     # graph of rules
-    graph = defaultdict(list)       # node-to-node directed (k->v) relationships
+    graph = defaultdict(list)       # node-to-destination directed (k->v) relationships
     incoming = defaultdict(int)     # number of (unvisited) INCOMING edges per node
     
     for x, y in applicable_rules:
@@ -67,10 +67,10 @@ def reorder_update(update, rules):
         node = nodes_to_visit.popleft()
         reordered.append(node)
         
-        for neighbor in graph[node]:
-            incoming[neighbor] -= 1
-            if incoming[neighbor] == 0:
-                nodes_to_visit.append(neighbor)
+        for destination in graph[node]:
+            incoming[destination] -= 1
+            if incoming[destination] == 0:
+                nodes_to_visit.append(destination)
 
     return reordered
 
@@ -81,13 +81,6 @@ if __name__ == '__main__':
 
     # file_path = 'example.txt'
     rules, updates = parse_file(args.file_path)
-
-    """
-    print("Rules:")
-    print(rules)
-    print("\nUpdates:")
-    print(updates)
-    """
 
     middles = []
     corrected_middles = []
