@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
     }
    
     // sort events by position 
-    std::sort(events.begin(), events.end(), [](const Event& a, const Event& b) {
+    sort(events.begin(), events.end(), [](const Event& a, const Event& b) {
         return a.position < b.position;
     });
 

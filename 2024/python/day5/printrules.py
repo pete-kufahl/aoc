@@ -14,15 +14,13 @@ def parse_file(file_path):
     blank_line_index = lines.index('\n') if '\n' in lines else len(lines)
     rules_section = lines[:blank_line_index]
     updates_section = lines[blank_line_index + 1:]
-    
-    # parse the rules section
+
     for line in rules_section:
         line = line.strip()
         if line:
             parts = line.split('|')
             rules.append((int(parts[0]), int(parts[1])))
-    
-    # parse the updates section
+
     for line in updates_section:
         line = line.strip()
         if line:
@@ -32,7 +30,7 @@ def parse_file(file_path):
 
 def middle_element(arr):
     if len(arr) % 2 == 0:
-        raise ValueError("The list must have an odd number of elements.")
+        raise ValueError("the list must have an odd number of elements.")
     idx = len(arr) // 2
     return arr[idx]
 
@@ -50,7 +48,7 @@ def reorder_update(update, rules):
     applicable_rules = [(x, y) for x, y in rules if x in update_els and y in update_els]
    
     # graph of rules
-    graph = defaultdict(list)       # node-to-node directed (k->v) relationships
+    graph = defaultdict(list)       # node-to-destination directed (k->v) relationships
     incoming = defaultdict(int)     # number of (unvisited) INCOMING edges per node
     
     for x, y in applicable_rules:
@@ -67,10 +65,10 @@ def reorder_update(update, rules):
         node = nodes_to_visit.popleft()
         reordered.append(node)
         
-        for neighbor in graph[node]:
-            incoming[neighbor] -= 1
-            if incoming[neighbor] == 0:
-                nodes_to_visit.append(neighbor)
+        for dest in graph[node]:
+            incoming[dest] -= 1
+            if incoming[dest] == 0:
+                nodes_to_visit.append(dest)
 
     return reordered
 
@@ -79,22 +77,14 @@ if __name__ == '__main__':
     parser.add_argument('file_path', help="Path to the text file containing the data.")
     args = parser.parse_args()
 
-    # file_path = 'example.txt'
     rules, updates = parse_file(args.file_path)
-
-    """
-    print("Rules:")
-    print(rules)
-    print("\nUpdates:")
-    print(updates)
-    """
 
     middles = []
     corrected_middles = []
     for update in updates:
         allowed = True
         for before, element in enumerate(update):
-            applicable_rules = [rule for rule in rules if rule[0] == element]
+            applicable_rules = [r for r in rules if r[0] == element]
             for appl in applicable_rules:
                 if appl[1] in update and update.index(appl[1]) < before:
                     allowed = False
