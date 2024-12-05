@@ -6,6 +6,7 @@
 | 2024 - 2: Radiation levels        | ✅   | ✅     |  🎯     | ✅  |         |
 | 2024 - 3: Process corrupted code  | ✅   | ✅     |  ✅     | ✅  |         |
 | 2024 - 4: Word search             |      | ✅     |         |     |         |
+| 2024 - 5: Rules and sequences     |      | ✅     |         |     |         |
 
 ### Legend
 
