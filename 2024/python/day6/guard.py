@@ -1,4 +1,5 @@
 import argparse
+import itertools
 
 def read_grid(file_path):
     with open(file_path, 'r') as file:
@@ -11,8 +12,6 @@ def find_starting_point(grid, chars):
             if element in chars:
                 return((row_index, col_index), element)
     return None
-
-import itertools
 
 class Navigator:
     """

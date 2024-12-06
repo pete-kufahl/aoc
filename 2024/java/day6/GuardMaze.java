@@ -8,10 +8,10 @@ public class GuardMaze {
             return;
         }
 
-        List<char[]> grid = getGrid(args);
+        char[][] grid = getGrid(args);
     }
 
-    private static List<char[]> getGrid(String[] args) {
+    private static char[][] getGrid(String[] args) {
         String filename = args[0];
         List<char[]> grid = new ArrayList<>();
 
@@ -29,6 +29,6 @@ public class GuardMaze {
             System.out.println(Arrays.toString(row));
         }
 
-        return grid;
+        return grid.toArray(new char[grid.size()][]);
     }
 }
