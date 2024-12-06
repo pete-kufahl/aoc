@@ -14,6 +14,10 @@ public class XMasWord {
         List<int[]> part1 = findWord(grid, "XMAS");
         System.out.println("Found XMAS " + part1.size() + " times");
 
+        // part 2
+        int part2 = findCrosses(grid);
+        System.out.println("Found X-MAS cross patterns " + part2 + " times");
+
     }
 
     public static List<int[]> findWord(char[][] grid, String word) {
@@ -59,6 +63,43 @@ public class XMasWord {
             }
         }
         return results;
+    }
+
+    public static int findCrosses(char[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // store the A-locations as strings of coordinates -> dirty!
+        Set<String> forwardCenters = new HashSet<>();
+        Set<String> backwardCenters = new HashSet<>();
+
+        // forward diagonals
+        for (int row = 0; row < rows - 2; row++) {
+            for (int col = 0; col < cols - 2; col++) {
+                char c1 = grid[row][col];
+                char c2 = grid[row + 1][col + 1];
+                char c3 = grid[row + 2][col + 2];
+                if ((c1 == 'M' && c2 == 'A' && c3 == 'S') || (c1 == 'S' && c2 == 'A' && c3 == 'M')) {
+                    forwardCenters.add((row + 1) + "," + (col + 1));
+                }
+            }
+        }
+
+        // backward diagonals
+        for (int row = 0; row < rows - 2; row++) {
+            for (int col = 2; col < cols; col++) {
+                char c1 = grid[row][col];
+                char c2 = grid[row + 1][col - 1];
+                char c3 = grid[row + 2][col - 2];
+                if ((c1 == 'M' && c2 == 'A' && c3 == 'S') || (c1 == 'S' && c2 == 'A' && c3 == 'M')) {
+                    backwardCenters.add((row + 1) + "," + (col - 1));
+                }
+            }
+        }
+
+        // intersections of forward and backward diagonals
+        forwardCenters.retainAll(backwardCenters);
+        return forwardCenters.size();
     }
 
     private static char[][] getGrid(String[] args) {
