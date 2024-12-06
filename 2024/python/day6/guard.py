@@ -18,44 +18,51 @@ class Navigator:
     """
     class for storing and cycling through the navigator of a 2D text maze
     """
-    def __init__(self, grid, obstacle):
+    def __init__(self, grid, obstacle, start_direction='^'):
         self.maze = grid
         self.mazeHeight = len(grid)
         self.mazeWidth = len(grid[0])
         self.obstacle = obstacle
+
+        # Set the initial direction based on the input character
+        self.directions = [self.go_up, self.go_right, self.go_down, self.go_left]
+        self.start_index = self.get_direction_index(start_direction)
+        self.current_index = self.start_index
 
     def is_escaping(self, x, y):
         return not (0 <= x < self.mazeWidth and 0 <= y < self.mazeHeight)
      
     def is_valid_move(self, x, y):
         # later, include an is_escaping check?
-        return not (self.maze[y][x] == self.obstacle)
+        return not (self.maze[x][y] == self.obstacle)
 
     def go_up(self, current_pos):
         x, y = current_pos
-        return (x, y - 1)
+        return (x-1, y)
 
     def go_right(self, current_pos):
         x, y = current_pos
-        return (x + 1, y)
+        return (x, y+1)
 
     def go_down(self, current_pos):
         x, y = current_pos
-        return (x, y + 1)
+        return (x+1, y)
 
     def go_left(self, current_pos):
         x, y = current_pos
-        return (x - 1, y)
+        return (x, y-1)
 
     def next_step(self, current_pos):
         """
         employs a cyclic iterator to traverse through the directions
         """
-        directions = [self.go_up, self.go_right, self.go_down, self.go_left]
-        direction_cycle = itertools.cycle(directions)
+        # direction_cycle = itertools.cycle(directions)
+        direction_cycle = itertools.cycle(self.directions[self.current_index:]
+                                           + self.directions[:self.current_index])
         
         for _ in range(4):
             direction = next(direction_cycle)
+            # print(direction.__name__)
             new_pos = direction(current_pos)
             x, y = new_pos
             
@@ -63,12 +70,16 @@ class Navigator:
                 return new_pos, True
             
             if self.is_valid_move(x, y):
+                self.current_index = self.directions.index(direction)
                 return new_pos, False
         
         return None, False
-
+    
+    def get_direction_index(self, start_direction):
+            return ['^', '>', 'v', '<'].index(start_direction)
 
 if __name__ == '__main__':
+    debug = False
     parser = argparse.ArgumentParser(description="Find the traversal path of a text maze.")
     parser.add_argument('file_path', help="Path to the text file containing the maze.")
     args = parser.parse_args()
@@ -81,13 +92,28 @@ if __name__ == '__main__':
 
     goal = False
     count = 1
+    visited = set()
 
     while not goal:
         count += 1
+        visited.add(curr)
+        
+        if debug:
+            grid[curr[0]][curr[1]] = 'X'
+
         curr, goal = navigator.next_step(current_pos=curr)
+        if debug:
+            print(f'move {count}, position {curr}')
 
         if not curr:
             print('Trapped!')
             break
 
-    print(f'Traversed maze in {count} steps')
+    print(f'Traversed {len(visited)} locations in {count} steps')
+
+    if debug:
+        xes = 0
+        for row in grid:
+            xes += row.count('X')
+            # print(row)
+        print(f'{xes} X\'s in maze')
