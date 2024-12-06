@@ -7,7 +7,7 @@
 | 2024 - 3: Process corrupted code  | ✅   | ✅     |  ✅     | ✅  |         |
 | 2024 - 4: Word search             | ✅   | ✅     |         |     |         |
 | 2024 - 5: Rules and sequences     |      | ✅     |         |     |         |
-| 2024 - 6: Maze traversal and trap |      | ✅     |         |     |         |
+| 2024 - 6: Maze traversal and trap | ⏳   | ✅     |         |     |         |
 
 ### Legend
 
