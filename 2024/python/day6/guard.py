@@ -26,8 +26,8 @@ class Navigator:
 
         # Set the initial direction based on the input character
         self.directions = [self.go_up, self.go_right, self.go_down, self.go_left]
-        self.start_index = self.get_direction_index(start_direction)
-        self.current_index = self.start_index
+        self.startIndex = self.get_direction_index(start_direction)
+        self.currentIndex = self.startIndex
 
         # store the locations and directions of the traversal
         self.pathTraversed = {
@@ -38,7 +38,7 @@ class Navigator:
         }
 
         # flag to identify loop; let the client program deal with it
-        self.trapped_in_loop = False
+        self.trappedInLoop = False
 
     def is_cycle(self, dir, pos):
         """
@@ -79,8 +79,8 @@ class Navigator:
         """
         employs a cyclic iterator to traverse through the directions
         """
-        direction_cycle = itertools.cycle(self.directions[self.current_index:]
-                                           + self.directions[:self.current_index])
+        direction_cycle = itertools.cycle(self.directions[self.currentIndex:]
+                                           + self.directions[:self.currentIndex])
         
         for _ in range(4):
             direction = next(direction_cycle)
@@ -92,8 +92,8 @@ class Navigator:
                 return new_pos, True
             
             if self.is_valid_move(x, y):
-                self.current_index = self.directions.index(direction)
-                self.trapped_in_loop = self.is_cycle(direction, new_pos)
+                self.currentIndex = self.directions.index(direction)
+                self.trappedInLoop = self.is_cycle(direction, new_pos)
                 return new_pos, False
         
         return None, False
@@ -161,7 +161,7 @@ def PART_TWO(grid, debug=True):
             if not curr:
                 print('Trapped!')
                 break
-            if navigator.trapped_in_loop:
+            if navigator.trappedInLoop:
                 print(f'guard trapped at {r}, {c}')
                 success += 1
                 break
