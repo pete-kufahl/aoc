@@ -29,11 +29,34 @@ class Navigator:
         self.start_index = self.get_direction_index(start_direction)
         self.current_index = self.start_index
 
+        # store the locations and directions of the traversal
+        self.pathTraversed = {
+            'go_up': set(),
+            'go_right': set(),
+            'go_down': set(),
+            'go_left': set()
+        }
+
+        # flag to identify loop; let the client program deal with it
+        self.trapped_in_loop = False
+
+    def is_cycle(self, dir, pos):
+        """
+        check if the position and direction match something
+        in the traversal history. True implies being trapped
+        in a cycle.
+        """
+        key = dir.__name__
+        if pos in self.pathTraversed[key]:
+            return True
+        else:
+            self.pathTraversed[key].add(pos)
+            return False
+
     def is_escaping(self, x, y):
         return not (0 <= x < self.mazeWidth and 0 <= y < self.mazeHeight)
      
     def is_valid_move(self, x, y):
-        # later, include an is_escaping check?
         return not (self.maze[x][y] == self.obstacle)
 
     def go_up(self, current_pos):
@@ -56,7 +79,6 @@ class Navigator:
         """
         employs a cyclic iterator to traverse through the directions
         """
-        # direction_cycle = itertools.cycle(directions)
         direction_cycle = itertools.cycle(self.directions[self.current_index:]
                                            + self.directions[:self.current_index])
         
@@ -71,6 +93,7 @@ class Navigator:
             
             if self.is_valid_move(x, y):
                 self.current_index = self.directions.index(direction)
+                self.trapped_in_loop = self.is_cycle(direction, new_pos)
                 return new_pos, False
         
         return None, False
@@ -78,13 +101,7 @@ class Navigator:
     def get_direction_index(self, start_direction):
             return ['^', '>', 'v', '<'].index(start_direction)
 
-if __name__ == '__main__':
-    debug = False
-    parser = argparse.ArgumentParser(description="Find the traversal path of a text maze.")
-    parser.add_argument('file_path', help="Path to the text file containing the maze.")
-    args = parser.parse_args()
-    grid = read_grid(args.file_path)
-    # print (grid)
+def PART_ONE(grid, debug=False):
     curr, orientation = find_starting_point(grid, ('^', 'v', '<', '>'))
 
     print(f'guard starting at {curr}, pointing: {orientation}')
@@ -117,3 +134,51 @@ if __name__ == '__main__':
             xes += row.count('X')
             # print(row)
         print(f'{xes} X\'s in maze')
+
+def PART_TWO(grid, debug=True):
+    starting_point, orientation = find_starting_point(grid, ('^', 'v', '<', '>'))
+    print(f'guard starting at {starting_point}, pointing: {orientation}')
+    
+    spaces = []
+    for row_index, row in enumerate(grid):
+        for col_index, element in enumerate(row):
+            if element == '.':
+                spaces.append((row_index, col_index))
+
+    success = 0
+    while len(spaces) > 0:
+        r, c = spaces.pop(0)
+        if debug:
+            print(f'trying obstacle at: {r}, {c} ...')
+        grid[r][c] = '#'
+        navigator = Navigator(grid, '#')
+        curr = starting_point
+        steps = 1
+        goal = False
+        while not goal:
+            steps += 1
+            curr, goal = navigator.next_step(current_pos=curr)
+            if not curr:
+                print('Trapped!')
+                break
+            if navigator.trapped_in_loop:
+                print(f'guard trapped at {r}, {c}')
+                success += 1
+                break
+        if goal and debug:
+            print(f'guard escaped after {steps} steps')
+        grid[r][c] = '.'
+
+    print(f'trapped the guard in {success} different arrangements')
+
+
+
+if __name__ == '__main__':
+    debug = False
+    parser = argparse.ArgumentParser(description="Find the traversal path of a text maze.")
+    parser.add_argument('file_path', help="Path to the text file containing the maze.")
+    args = parser.parse_args()
+    grid = read_grid(args.file_path)
+
+    PART_ONE(grid, debug)
+    PART_TWO(grid, True)
