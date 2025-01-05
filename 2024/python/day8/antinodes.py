@@ -38,7 +38,31 @@ def find_collinear_points(network, grid):
     calculate antinodes amongst a set of coordinates, where antinodes occur at any
     grid point collinear between any two network locations
     """
-    pass
+    antinodes = set()
+    for loc1 in network:
+        for loc2 in (network - set(loc1)):
+            diff_x = loc1[0] - loc2[0]
+            diff_y = loc1[1] - loc2[1]
+            i = 1
+            go_plus, go_minus = True, True
+            while (go_plus and i < 48):
+                node1 = (loc1[0] + i * diff_x, loc1[1] + i * diff_y)
+                if in_bounds(node1, grid):
+                    antinodes.add(node1)
+                    i += 1
+                else:
+                    go_plus = False
+            i = 1
+            while(go_minus and i < 48):
+                node2 = (loc1[0] - i * diff_x, loc1[1] - i * diff_y)    
+                if in_bounds(node2, grid):
+                    antinodes.add(node2)
+                    i += 1
+                else:
+                    go_minus = False
+
+    # apparently in Part 2 we consider antennae network locations as possible antinodes
+    return antinodes
 
 
 def PART_ONE(grid, debug=False):
@@ -84,7 +108,6 @@ def PART_TWO(grid, debug=False):
     """
     count antinodes in grid of text, where each antinode occurs at every collinear point
     """
-    print(f'input grid is {len(grid)} rows and {len(grid[0])} columns')
     # build data structure of antenna frequencies
     antennae = defaultdict(set)     # frequency (char) -> locations { (x, y) }
     for y, row in enumerate(grid):
@@ -96,6 +119,10 @@ def PART_TWO(grid, debug=False):
     antinodes = []
     for network in antennae.values():
         antinodes.append(find_collinear_points(network, grid))
+    # flatten a list of sets into a single set
+    uniq = set(chain.from_iterable(antinodes))
+    print()
+    print(f'{len(uniq)} collinear-point antinodes amongst all of these antenna pairs')
 
 if __name__ == '__main__':
     debug = False
