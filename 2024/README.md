@@ -8,6 +8,8 @@
 | 2024 - 4: Word search             | ✅   | ✅     |         |     |         |
 | 2024 - 5: Rules and sequences     |      | ✅     |         |     |         |
 | 2024 - 6: Maze traversal and trap | ⏳   | ✅     |         |     |         |
+| 2024 - 7: Evaluate operators      |      | ✅     |         |     |         |
+| 2024 - 8: Map antinodes           |      | ✅     |         |     |         |
 
 ### Legend
 
