@@ -59,8 +59,8 @@ def test_add_mult_concat(test_value, operands):
 
 if __name__ == '__main__':
     debug = False
-    parser = argparse.ArgumentParser(description="Find the traversal path of a text maze.")
-    parser.add_argument('file_path', help="Path to the text file containing the maze.")
+    parser = argparse.ArgumentParser(description="Determine if the left number is a possible result of a list of operands.")
+    parser.add_argument('file_path', help="Path to the text file containing the sets of test numbers and operands.")
     args = parser.parse_args()
 
     total_calibration_value1, total_calibration_value2 = 0, 0
