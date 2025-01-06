@@ -3,7 +3,7 @@ import argparse
 def PART_ONE(filepath, debug=False):
     """
     the string inside the parameter filepath (a file to be read a character at a time) describes 'files'
-    and 'memory spaces'. Compact and compute a checksum.
+    and 'memory spaces'. Compact (moving file segments) and compute a checksum.
     """
     diskMap, gapMap, map_idx = build_files_and_gaps(filepath)
 
@@ -68,6 +68,67 @@ def PART_ONE(filepath, debug=False):
 
     print (f'final checksum is {checksum}') 
 
+def PART_TWO(filepath, debug=False):
+    """
+    the string inside the parameter filepath (a file to be read a character at a time) describes 'files'
+    and 'memory spaces'. Compact (moving whole files) and compute a checksum.
+    """
+    diskMap, gapMap, map_idx = build_files_and_gaps(filepath)
+
+    debug and print (f'map index at start of compression = {map_idx}')
+    if debug:
+        print_disc(diskMap, map_idx)
+
+    # optimize: 
+    #. attempt to move whole files to the leftmost span of free space blocks that could fit the file
+    #. attempt to move each file exactly once in order of decreasing file ID number
+    # compute checksum from final diskMap
+    compressedMap = {}
+    # sorted by location --> also sorted by file id
+    filesToMove = sorted(diskMap.keys())
+    gapsToFill = sorted(gapMap.keys())
+    for loc in reversed(filesToMove):
+        moved = False
+        fid, fsize = diskMap[loc]
+        for gloc in gapsToFill:
+            if gloc >= loc:     # only look left
+                break
+            gsize = gapMap[gloc]
+            if gsize >= fsize:
+                compressedMap[gloc] = diskMap[loc]
+                moved = True
+                gsize -= fsize
+                if gsize > 0:
+                    gapMap.pop(gloc)
+                    gapMap[gloc + fsize] = gsize
+                else:
+                    gapMap.pop(gloc)
+                break
+        if moved:
+            # update gaps, lazy way
+            gapsToFill = sorted(gapMap.keys())
+        else:
+            # in compressed map, leave file in place
+            compressedMap[loc] = diskMap[loc]
+        if debug:
+            print(f'checked file {fid} (original location {loc}), placed in {gloc if moved else loc}')
+            print_disc(compressedMap, map_idx)
+
+    checksum = 0
+    compressed = sorted(compressedMap.keys())
+    cidx = 0
+    _, lsize = compressedMap[compressed[-1]]
+    end = compressed[-1] + lsize
+    while cidx < end:
+        if cidx in compressedMap:
+            fid, fsize = compressedMap[cidx]
+            for _ in range(fsize):
+                checksum += (cidx * fid)
+                cidx += 1
+        else:
+            cidx += 1
+    print (f'final checksum is {checksum}') 
+
 def build_files_and_gaps(filepath):
     diskMap = {}    # (int) map-index --> (file-id, file-size)
     gapMap = {}
@@ -121,4 +182,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     PART_ONE(args.file_path, False)
-    # PART_TWO(args.file_path, True)
+    PART_TWO(args.file_path, False)
