@@ -10,6 +10,7 @@
 | 2024 - 6: Maze traversal and trap | ⏳   | ✅     |         |     |         |
 | 2024 - 7: Evaluate operators      |      | ✅     |         |     |         |
 | 2024 - 8: Map antinodes           |      | ✅     |         |     |         |
+| 2024 - 9: Compact filesystem      |      | ✅     |         |     |         |
 
 ### Legend
 
