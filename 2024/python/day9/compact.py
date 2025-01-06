@@ -5,30 +5,7 @@ def PART_ONE(filepath, debug=False):
     the string inside the parameter filepath (a file to be read a character at a time) describes 'files'
     and 'memory spaces'. Compact and compute a checksum.
     """
-    diskMap = {}    # (int) map-index --> (file-id, file-size)
-    gapMap = {}
-    input_idx = -1
-    map_idx = 0
-    fileID = filesize = space = 0
-    with open(filepath) as f:
-        while True:
-            char = f.read(1)          
-            if (not char) or (char == '\n'):
-                break
-            input_idx += 1
-            # evens -> file of size char
-            # odds -> memory space of size char
-            if input_idx % 2:
-                space = int(char)
-                # debug and print(f'at map index {map_idx}, free space of {space}')
-                gapMap[map_idx] = space
-                map_idx += space
-            else:
-                filesize = int(char)
-                # debug and print(f'at map index {map_idx}, file id {fileID} of size {filesize}')
-                diskMap[map_idx] = (fileID, filesize)
-                fileID += 1
-                map_idx += filesize
+    diskMap, gapMap, map_idx = build_files_and_gaps(filepath)
 
     debug and print (f'map index at start of compression = {map_idx}')
     if debug:
@@ -83,7 +60,7 @@ def PART_ONE(filepath, debug=False):
 
         debug and print_disc(diskMap, end)
         if uncompressed:
-            lid, lsize = diskMap[uncompressed[-1]]
+            _, lsize = diskMap[uncompressed[-1]]
             while (end - 1) > (uncompressed[-1] + lsize - 1):
                 debug and print('leftover gap at end! adjusting ...')
                 end -= 1
@@ -91,7 +68,38 @@ def PART_ONE(filepath, debug=False):
 
     print (f'final checksum is {checksum}') 
 
+def build_files_and_gaps(filepath):
+    diskMap = {}    # (int) map-index --> (file-id, file-size)
+    gapMap = {}
+    input_idx = -1
+    map_idx = 0
+    fileID = filesize = space = 0
+    with open(filepath) as f:
+        while True:
+            char = f.read(1)          
+            if (not char) or (char == '\n'):
+                break
+            input_idx += 1
+            # evens -> file of size char
+            # odds -> memory space of size char
+            if input_idx % 2:
+                space = int(char)
+                # debug and print(f'at map index {map_idx}, free space of {space}')
+                gapMap[map_idx] = space
+                map_idx += space
+            else:
+                filesize = int(char)
+                # debug and print(f'at map index {map_idx}, file id {fileID} of size {filesize}')
+                diskMap[map_idx] = (fileID, filesize)
+                fileID += 1
+                map_idx += filesize
+    return diskMap, gapMap, map_idx
+
 def print_disc(diskMap, map_idx):
+    """
+    this debug is only accurate if diskMap is updated where the gaps are filled.
+    for now, it serves its purpose in watching behavior at map_idx during compression.
+    """
     i = 0
     disk_str = ""
     while i < map_idx:
