@@ -27,7 +27,7 @@ def is_valid(x, y, grid, prev):
     """
     return (0 <= x < len(grid)) and (0 <= y < len(grid[0])) and (grid[x][y] == prev + 1)
 
-def PART_ONE(grid, debug=False):
+def PART_ONE_AND_TWO(grid, debug=False):
     """
     find 0..9 paths in grid of integers
     """
@@ -35,6 +35,7 @@ def PART_ONE(grid, debug=False):
     starts = get_starting_points(grid, 0)
     directions = [(1, 0), (0, 1), (-1, 0), (0, -1)] # down, right, up, left
     solutions = []
+    rating = [0]    # python passes by reference
 
     def dfs(x, y, path, summits):
         """
@@ -42,7 +43,9 @@ def PART_ONE(grid, debug=False):
         """
         path.append((x, y))
         if grid[x][y] == 9:
-            # stop recursion, store copy of path (if summit not reached before)
+            # stop recursion, score the distinct path
+            rating[0] += 1
+            # store copy of path (if summit not reached before)
             if (x, y) not in summits:
                 summits.append((x, y))
                 solutions.append(path[:])
@@ -54,13 +57,16 @@ def PART_ONE(grid, debug=False):
         path.pop()  # backtrack
 
     total_score = 0
+    total_rating = 0
     for sx, sy in starts:
         dfs(sx, sy, [], [])
-        print(f'starting point ({sx}, {sy}) has score {len(solutions)}')
+        print(f'starting point ({sx}, {sy}) has score {len(solutions)} and rating {rating[0]}')
         total_score += len(solutions)
+        total_rating += rating[0]
         debug and print(solutions)
-        solutions = []
+        solutions, rating = [], [0]
     print(f'total score for grid is {total_score}')
+    print(f'total rating for the grid is {total_rating}')
     
 
 if __name__ == '__main__':
@@ -70,5 +76,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     grid = read_grid(args.file_path)
 
-    PART_ONE(grid, False)
-    # PART_TWO(grid, True)
+    PART_ONE_AND_TWO(grid, False)
