@@ -8,16 +8,9 @@ def PART_ONE(filepath, debug=False):
     diskMap, gapMap, map_idx = build_files_and_gaps(filepath)
 
     debug and print (f'map index at start of compression = {map_idx}')
-    if debug:
-        print_disc(diskMap, map_idx)
-        """ for k, v in diskMap.items():
-            print (f'file id {v[0]}, map index {k}, size {v[1]}')
-        for l, w in gapMap.items():
-            print (f'map index {l}, gap of size {w}') """
+    debug and print_disc(diskMap, map_idx)
 
-    uncompressed = sorted(diskMap.keys())
-    gaps = sorted(gapMap.keys())
-    
+    uncompressed = sorted(diskMap.keys())   
     checksum: int = 0    # python just handles big integers
     cidx = 0
 
@@ -80,12 +73,10 @@ def PART_TWO(filepath, debug=False):
         print_disc(diskMap, map_idx)
 
     # optimize: 
-    #. attempt to move whole files to the leftmost span of free space blocks that could fit the file
+    #. attempt to move whole files to the leftmost gap that could fit the file
     #. attempt to move each file exactly once in order of decreasing file ID number
-    # compute checksum from final diskMap
     compressedMap = {}
-    # sorted by location --> also sorted by file id
-    filesToMove = sorted(diskMap.keys())
+    filesToMove = sorted(diskMap.keys())    # sorted by location --> also sorted by file id
     gapsToFill = sorted(gapMap.keys())
     for loc in reversed(filesToMove):
         moved = False
@@ -114,6 +105,7 @@ def PART_TWO(filepath, debug=False):
             print(f'checked file {fid} (original location {loc}), placed in {gloc if moved else loc}')
             print_disc(compressedMap, map_idx)
 
+    # compute checksum
     checksum = 0
     compressed = sorted(compressedMap.keys())
     cidx = 0
