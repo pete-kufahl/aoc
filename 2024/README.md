@@ -11,6 +11,7 @@
 | 2024 - 7: Evaluate operators      |      | ✅     |         |     |         |
 | 2024 - 8: Map antinodes           |      | ✅     |         |     |         |
 | 2024 - 9: Compact filesystem      |      | ✅     |         |     |         |
+| 2024 - 10: Trailhead scores       |      | ✅     |         |     |         |
 
 ### Legend
 
