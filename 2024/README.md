@@ -12,6 +12,7 @@
 | 2024 - 8: Map antinodes           |      | ✅     |         |     |         |
 | 2024 - 9: Compact filesystem      |      | ✅     |         |     |         |
 | 2024 - 10: Trailhead scores       |      | ✅     |         |     |         |
+| 2024 - 11: Count stones           |      | ✅     |         |     |         |
 
 ### Legend
 
