@@ -26,15 +26,14 @@ def blink(stoneCounts):
     return nextStoneCounts
 			
 
-
 def PART_ONE_OR_TWO(initial_stones, blinks: int = 25, debug: bool = False):
     """
     count how many stones are in a row, after 25 *blinks*
     the order of the stones does not matter, so store in dict (number of stone --> number of stones) to save space
     """
-    stoneCounts = defaultdict(int)      # match type in blink()
-    for stone in set(initial_stones):
-        stoneCounts[stone] = initial_stones.count(stone)
+    stoneCounts = defaultdict(int)
+    for stone in initial_stones:
+        stoneCounts[stone] += 1
 
     for i in range(blinks):
         # replace the row of stones with a new row
