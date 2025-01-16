@@ -11,9 +11,6 @@ def read_grid(file_path):
 
     return grid
 
-def in_bounds(r, c, grid):
-    return (-1 < r < len(grid)) and (-1 < c < len(grid[0]))
-
 def area(region):
     return len(region)
 
@@ -32,17 +29,21 @@ def perimeter(region):
 
     return total_perimeter
 
+def edges(region):
+    """
+    find the number of edges in the shape defined by the coordinates of a region
+    """
+    pass
 
-def PART_ONE(grid, debug=False):
+def connected_regions(grid):
     """
-    calculate fence boundaries in grid of text
-    each region uses a fence that costs its area * its perimeter
+    use breadth-first search to visit every location in the grid and group them into
+    regions of common plants. Returns a list of sets, where each element in each set
+    is a (row, col) tuple corresponding to a location in the grid.
     """
+    regions = []
     rows = len(grid)
     cols = len(grid[0])
-    debug and print(f'input grid is {rows} rows and {cols} columns')
-    
-    regions = []
     visited = set()
 
     # visit all locations in farm just once
@@ -73,14 +74,31 @@ def PART_ONE(grid, debug=False):
             visited = visited | curr_region
             # 4. add region to the collection of regions
             regions.append(curr_region)
-    
+    return regions
+
+def PART_ONE(grid, debug=False):
+    """
+    calculate fence boundaries in grid of text
+    each region uses a fence that costs its area * its perimeter
+    """    
+    regions = connected_regions(grid)
 
     if debug:
+        locs = sum(len(region) for region in regions)
+        print(f'{locs} locations accounted for in grid of {len(grid) * len(grid[0])} cells')
         for region in regions:
             print(f'area: {area(region)}, perimeter: {perimeter(region)}')
 
     fences = sum(area(region) * perimeter(region) for region in regions)
     print(f'total fence units is {fences} for {len(regions)} regions')
+
+
+def PART_TWO(grid, debug=False):
+    """
+    calculate fence boundaries in grid of text
+    each region uses a fence that costs its area * its number of edges
+    """
+    regions = connected_regions(grid)
 
 
 if __name__ == '__main__':
@@ -90,5 +108,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     grid = read_grid(args.file_path)
 
-    PART_ONE(grid, True)
-    # PART_TWO(grid, True)
+    PART_ONE(grid, False)
+    PART_TWO(grid, True)
