@@ -37,7 +37,7 @@ def perimeter(region):
     return total_perimeter
 
 
-def oriented_edges(grid, region, debug=True):
+def sides(grid, region, debug=True):
     """
     find the number of sides around the shape defined by the coordinates of a region. 
     do this by finding the edge of each location, and which direction it's outwardly facing.
@@ -61,6 +61,35 @@ def oriented_edges(grid, region, debug=True):
         print(grid[r][c], ': ')
         print(edges)
 
+    # consolidate edges: for each edge in the map, eliminate (from the running count of sides) 
+    #  every adjacent edge that has the same whole-number
+    #  coordinate and direction (thus keeping kitty-corner edges along the same 
+    #  line but facing opposite directions)
+    # traverse the map keys and visit neighbors
+    visited = set()
+    num_sides = 0
+    for edge, direction in edges.items():
+        if edge not in visited:
+            visited.add(edge)
+            num_sides += 1
+            edge_r, edge_c = edge
+            # edge on the left/right => visit up/down
+            if edge_r % 1 == 0:
+                for delta_r in [-1, 1]:
+                    next_r = edge_r + delta_r
+                    # check presence and direction of edge on next row over
+                    while edges.get((next_r, edge_c)) == direction:
+                        visited.add((next_r, edge_c))
+                        next_r += delta_r
+            else:
+                # edge on the top/bottom => visit left/right
+                for delta_c in [-1, 1]:
+                    next_c = edge_c + delta_c
+                    # check presence and direction of edge on next column over
+                    while edges.get((edge_r, next_c)) == direction:
+                        visited.add((edge_r, next_c))
+                        next_c += delta_c
+    return num_sides
 
 
 def connected_regions(grid):
@@ -114,7 +143,7 @@ def PART_ONE(grid, debug=False):
             print(f'area: {area(region)}, perimeter: {perimeter(region)}')
 
     fences = sum(area(region) * perimeter(region) for region in regions)
-    print(f'total fence units is {fences} for {len(regions)} regions')
+    print(f'1.) total fence units is {fences} for {len(regions)} regions')
 
 
 def PART_TWO(grid, debug=False):
@@ -123,8 +152,8 @@ def PART_TWO(grid, debug=False):
     each region uses a fence that costs its area * its number of edges
     """
     regions = connected_regions(grid)
-    for region in regions:
-        sides = oriented_edges(grid, region, False)
+    fences = sum(area(region) * sides(grid, region, debug) for region in regions)
+    print(f'2.) total fence units is {fences} for {len(regions)} regions')
 
 
 if __name__ == '__main__':
@@ -136,4 +165,4 @@ if __name__ == '__main__':
 
     PART_ONE(grid, False)
     print()
-    PART_TWO(grid, True)
+    PART_TWO(grid, False)
