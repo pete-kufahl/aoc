@@ -40,9 +40,10 @@ def perimeter(region):
 def sides(grid, region, debug=True):
     """
     find the number of sides around the shape defined by the coordinates of a region. 
-    do this by finding the edge of each location, and which direction it's outwardly facing.
-    then colocated edges facing in opposite directions cancel each other, leaving
-      the external edges of the region, a.k.a. the sides.
+    do this by finding the border edge of each location, and which direction 
+    it's outwardly facing.
+    then adjacent edges facing the same direction cancel each other, leaving
+      a count of the continuous edges of the region, a.k.a. the sides.
     """
     # store the oriented edges as a map (r, c) => outwardly direction
     edges = {}

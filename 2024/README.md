@@ -13,6 +13,7 @@
 | 2024 - 9: Compact filesystem      |      | ✅     |         |     |         |
 | 2024 - 10: Trailhead scores       |      | ✅     |         |     |         |
 | 2024 - 11: Count stones           |      | ✅     |         |     |         |
+| 2024 - 12: Area, perimeter, sides |      | ✅     |         |     |         |
 
 ### Legend
 
