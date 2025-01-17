@@ -37,11 +37,30 @@ def perimeter(region):
     return total_perimeter
 
 
-def edges(region):
+def oriented_edges(grid, region, debug=True):
     """
-    find the number of edges in the shape defined by the coordinates of a region
+    find the number of sides around the shape defined by the coordinates of a region. 
+    do this by finding the edge of each location, and which direction it's outwardly facing.
+    then colocated edges facing in opposite directions cancel each other, leaving
+      the external edges of the region, a.k.a. the sides.
     """
-    pass
+    # store the oriented edges as a map (r, c) => outwardly direction
+    edges = {}
+    # iterate through every direction of every location
+    for curr_r, curr_c in region:
+        for next_r, next_c in [(curr_r-1, curr_c), (curr_r+1, curr_c), (curr_r, curr_c-1), (curr_r, curr_c+1)]:
+            if (next_r, next_c) not in region:
+                # each edge stored as the average x-, y-coordinate of the locations it separates
+                edge_r = (curr_r + next_r) / 2
+                edge_c = (curr_c + next_c) / 2
+                # the direction is the edges coordinates relative to the curr_r, curr_c location (i.e., origin)
+                edges[(edge_r, edge_c)] = (edge_r - curr_r, edge_c - curr_c)
+    if debug:
+        print("--" * 30)
+        r, c = list(region)[0]
+        print(grid[r][c], ': ')
+        print(edges)
+
 
 
 def connected_regions(grid):
@@ -104,6 +123,8 @@ def PART_TWO(grid, debug=False):
     each region uses a fence that costs its area * its number of edges
     """
     regions = connected_regions(grid)
+    for region in regions:
+        sides = oriented_edges(grid, region, False)
 
 
 if __name__ == '__main__':
@@ -114,4 +135,5 @@ if __name__ == '__main__':
     grid = read_grid(args.file_path)
 
     PART_ONE(grid, False)
+    print()
     PART_TWO(grid, True)
