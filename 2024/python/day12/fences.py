@@ -3,16 +3,24 @@ from collections import deque
 
 def read_grid(file_path):
     """
-    1. get contents of file into memory (char)
-    2. convert all values in grid into integers
+    get contents of file into memory (char)
     """
     with open(file_path, 'r') as file:
         grid = [list(line.strip()) for line in file]
-
     return grid
+
+
+def inbounds(r, c, grid) -> bool:
+    rows = len(grid)
+    cols = len(grid[0])
+    if (r < 0) or (c < 0) or (r >= rows) or (c >= cols):
+        return False
+    return True
+
 
 def area(region):
     return len(region)
+
 
 def perimeter(region):
     """
@@ -26,14 +34,15 @@ def perimeter(region):
         for next_r, next_c in [(curr_r-1, curr_c), (curr_r+1, curr_c), (curr_r, curr_c-1), (curr_r, curr_c+1)]:
             if (next_r, next_c) in region:
                 total_perimeter -= 1
-
     return total_perimeter
+
 
 def edges(region):
     """
     find the number of edges in the shape defined by the coordinates of a region
     """
     pass
+
 
 def connected_regions(grid):
     """
@@ -49,12 +58,10 @@ def connected_regions(grid):
     # visit all locations in farm just once
     for r in range(rows):
         for c in range(cols):
-            # start_pt = (r, c)
             if (r, c) in visited: continue
             visited.add((r, c))
             curr_region = {(r, c)}
             curr_plant = grid[r][c]
-
             # now perform BFS to find all locations in current region
             # 1. initial queue has the starting point
             qBFS = deque([(r, c)])
@@ -63,13 +70,11 @@ def connected_regions(grid):
                 curr_r, curr_c = qBFS.popleft()
                 # 2a. iterate through the directions to find neighboring (unseen) matching locations
                 for next_r, next_c in [(curr_r-1, curr_c), (curr_r+1, curr_c), (curr_r, curr_c-1), (curr_r, curr_c+1)]:
-                    # if not in_bounds(next_r, next_c, grid): continue
-                    if next_r < 0 or next_c < 0 or next_r >= rows or next_c >= cols: continue
-                    if grid[next_r][next_c] != curr_plant: continue
-                    if (next_r, next_c) in curr_region: continue
                     # 2b. add qualifying locations to the region and queue
-                    curr_region.add((next_r, next_c))
-                    qBFS.append((next_r, next_c))
+                    #   compare numbers, then two chars, then tuples
+                    if inbounds(next_r, next_c, grid) and (grid[next_r][next_c] == curr_plant) and ((next_r, next_c) not in curr_region):
+                        curr_region.add((next_r, next_c))
+                        qBFS.append((next_r, next_c))
             # 3. add region to the set of visited locations
             visited = visited | curr_region
             # 4. add region to the collection of regions
