@@ -76,7 +76,8 @@ def minimize_cost_brute(problem, button_max):
     best_b_presses = 0
 
     # iterate over possible counts for A presses
-    end_a = min(button_max, target_x // ax + 1)
+    end_a = min(int(button_max), target_x // ax + 1)
+    print(f'iterating A, 0 to {end_a} ....')
     for a_presses in range(end_a):
         remaining_x = target_x - (a_presses * ax)
         remaining_y = target_y - (a_presses * ay)
@@ -100,12 +101,52 @@ def minimize_cost_brute(problem, button_max):
         'B': best_b_presses
     }
 
+def compute_cost_lineqs(problem, button_max):
+    """
+    instead of looping, observe that the problem of:
+      A * dist_ax * x + B * dist_bx * x = prize_x
+      A * dist_ay * y + B * dist_by * y = prize_y
+    is a system of 2 linear equations with 2 unknowns (A, B)
+      and therefore has one unique solution.
+    so, the problem of minimizing the cost is a trick question.
+    calculate the cost of the solution, provided that A < button_max and B < button_max
+    """
+    button_a = problem['Button A']
+    button_b = problem['Button B']
+    prize = problem['Prize']
+    
+    target_x = prize['X']
+    target_y = prize['Y']
+
+    ax, ay = button_a['X'], button_a['Y']
+    bx, by = button_b['X'], button_b['Y']
+
+    cost_a = 3
+    cost_b = 1
+
+
 
 def PART_ONE(problems, debug=False):
-
     total_min = 0
     for idx, problem in enumerate(problems, 1):
         ans = minimize_cost_brute(problem, 100)
+        min_cost = ans['Cost']
+        if math.isfinite(min_cost):
+            total_min += min_cost
+        if debug:
+            a = ans['A']
+            b = ans['B']
+            x = problem['Prize']['X']
+            y = problem['Prize']['Y']
+            print(f'Problem {idx}: X={x}, Y={y}, cost={min_cost}, A presses={a}, B presses={b}')
+    print(f'Total cost after {len(problems)} claw machine problems is {total_min}')
+
+def PART_TWO(problems, debug=False):
+    total_min = 0
+    for idx, problem in enumerate(problems, 1):
+        problem['Prize']['X'] = 10000000000000 + problem['Prize']['X']
+        problem['Prize']['Y'] = 10000000000000 + problem['Prize']['Y']
+        ans = minimize_cost_brute(problem, 10000000000000 / 100)
         min_cost = ans['Cost']
         if math.isfinite(min_cost):
             total_min += min_cost
@@ -124,6 +165,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     problems = parse_optimization_file(args.file_path)
 
-    PART_ONE(problems, True)
+    PART_ONE(problems, False)
     print()
-    # PART_TWO(grid, False)
+    PART_TWO(problems, True)
