@@ -14,6 +14,7 @@
 | 2024 - 10: Trailhead scores       |      | ✅     |         |     |         |
 | 2024 - 11: Count stones           |      | ✅     |         |     |         |
 | 2024 - 12: Area, perimeter, sides |      | ✅     |         |     |         |
+| 2024 - 13: Claw machine path      |      | ✅     |         |     |         |
 
 ### Legend
 
