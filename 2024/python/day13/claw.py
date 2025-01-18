@@ -101,7 +101,7 @@ def minimize_cost_brute(problem, button_max):
         'B': best_b_presses
     }
 
-def compute_cost_lineqs(problem, button_max):
+def compute_cost_lineqs(problem, max_presses=float('inf')):
     """
     instead of looping, observe that the problem of:
       A * dist_ax * x + B * dist_bx * x = prize_x
@@ -114,22 +114,57 @@ def compute_cost_lineqs(problem, button_max):
     button_a = problem['Button A']
     button_b = problem['Button B']
     prize = problem['Prize']
-    
-    target_x = prize['X']
-    target_y = prize['Y']
 
     ax, ay = button_a['X'], button_a['Y']
     bx, by = button_b['X'], button_b['Y']
+    px, py = prize['X'], prize['Y']
 
     cost_a = 3
     cost_b = 1
+
+    """
+        1. start here -> rename coeffs
+        A * dist_ax * x + B * dist_bx * x = prize_x   --> Ax * A + Bx * B = Px
+        A * dist_ay * y + B * dist_by * y = prize_y   --> Ay * A + By * B = Py
+
+        2. multiply top eq by By, bottom eq by Bx
+        Ax * By * A + Bx * By * B = By * Px
+        Ay * Bx * A + Bx * By * B = Bx * Py
+
+        3. subtract bottom from top, second term on left cancels
+        (Ax * By - Ay * Bx) * A = By * Px - Bx * Px
+
+        4. solve for A, substitute into Ax * A + Bx * B = Px
+    """
+    # step 4
+    if (ax * by - ay * bx) == 0:
+        return { 'Cost': float('inf'), 'A': 0, 'B': 0 }
+    
+    a_presses = (by * px - bx * py) / (ax * by - ay * bx)
+    b_presses = (px - ax * a_presses) / bx
+
+    if a_presses < max_presses and b_presses < max_presses:
+        # maybe allow for a little roundoff?
+        precision = 0.0000001
+        if a_presses % 1 < precision and b_presses % 1 < precision:
+            cost = round(a_presses) * cost_a + round(b_presses) * cost_b
+        else:
+            cost = float('inf')
+    else:
+        cost = float('inf')
+
+    return {
+        'Cost': cost,
+        'A': a_presses,
+        'B': b_presses
+    }
 
 
 
 def PART_ONE(problems, debug=False):
     total_min = 0
     for idx, problem in enumerate(problems, 1):
-        ans = minimize_cost_brute(problem, 100)
+        ans = compute_cost_lineqs(problem, 100)
         min_cost = ans['Cost']
         if math.isfinite(min_cost):
             total_min += min_cost
@@ -146,7 +181,7 @@ def PART_TWO(problems, debug=False):
     for idx, problem in enumerate(problems, 1):
         problem['Prize']['X'] = 10000000000000 + problem['Prize']['X']
         problem['Prize']['Y'] = 10000000000000 + problem['Prize']['Y']
-        ans = minimize_cost_brute(problem, 10000000000000 / 100)
+        ans = compute_cost_lineqs(problem)
         min_cost = ans['Cost']
         if math.isfinite(min_cost):
             total_min += min_cost
@@ -167,4 +202,4 @@ if __name__ == '__main__':
 
     PART_ONE(problems, False)
     print()
-    PART_TWO(problems, True)
+    PART_TWO(problems, False)
