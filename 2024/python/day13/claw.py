@@ -1,5 +1,6 @@
 import argparse
 import re
+import math
 
 def parse_optimization_file(file_path):
     """
@@ -51,13 +52,70 @@ def parse_problem(lines):
         'Prize': prize
     }
 
+def minimize_cost_brute(problem, button_max):
+    """
+    finds the minimum cost to reach the prize location exactly
+    button_max is the maximum number of button presses to be attempted
+    rather a brute-force approach, exploiting the fact that the destination must be reached in exactly
+    """
+    button_a = problem['Button A']
+    button_b = problem['Button B']
+    prize = problem['Prize']
+    
+    target_x = prize['X']
+    target_y = prize['Y']
+
+    ax, ay = button_a['X'], button_a['Y']
+    bx, by = button_b['X'], button_b['Y']
+
+    cost_a = 3
+    cost_b = 1
+
+    min_cost = float('inf')
+    best_a_presses = 0
+    best_b_presses = 0
+
+    # iterate over possible counts for A presses
+    end_a = min(button_max, target_x // ax + 1)
+    for a_presses in range(end_a):
+        remaining_x = target_x - (a_presses * ax)
+        remaining_y = target_y - (a_presses * ay)
+
+        # check if the remaining prize location can be exactly by pressing B
+        if remaining_x >= 0 and remaining_y >= 0 and remaining_x % bx == 0 and remaining_y % by == 0:
+            # match X
+            b_presses = remaining_x // bx
+            # match Y
+            if (b_presses <= button_max) and (b_presses * by == remaining_y):
+                # calculate total cost and compare
+                cost = cost_a * a_presses + cost_b * b_presses
+                if cost < min_cost:
+                    min_cost = cost
+                    best_a_presses = a_presses
+                    best_b_presses = b_presses
+
+    return {
+        'Cost': min_cost,
+        'A': best_a_presses,
+        'B': best_b_presses
+    }
+
+
 def PART_ONE(problems, debug=False):
-    if debug:
-        for idx, problem in enumerate(problems, 1):
-            print(f"Problem {idx}:")
-            print(f"  Button A: X+{problem['Button A']['X']}, Y+{problem['Button A']['Y']}")
-            print(f"  Button B: X+{problem['Button B']['X']}, Y+{problem['Button B']['Y']}")
-            print(f"  Prize: X={problem['Prize']['X']}, Y={problem['Prize']['Y']}")
+
+    total_min = 0
+    for idx, problem in enumerate(problems, 1):
+        ans = minimize_cost_brute(problem, 100)
+        min_cost = ans['Cost']
+        if math.isfinite(min_cost):
+            total_min += min_cost
+        if debug:
+            a = ans['A']
+            b = ans['B']
+            x = problem['Prize']['X']
+            y = problem['Prize']['Y']
+            print(f'Problem {idx}: X={x}, Y={y}, cost={min_cost}, A presses={a}, B presses={b}')
+    print(f'Total cost after {len(problems)} claw machine problems is {total_min}')
 
 if __name__ == '__main__':
 
