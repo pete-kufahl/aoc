@@ -54,6 +54,29 @@ def calc_safety_factor(bots, height, width):
 
     return math.prod(quads)    # python 3.8
 
+def find_tree(robots, height, width, debug=False):
+    """
+    step through the simulation and find the arrangement where they make a xmas tree, i guess
+    if this means the arrangement with the smallest safety factor, the algo is simple
+    """
+    min_safety = float('inf')
+    best_iter = 0
+
+    # instead of using the modulo to avoid loops, step through this time
+    # i think the last iteration is the point before they're all wrapping around again
+    for sec in range(width * height):
+        results = []
+        for px, py, vx, vy in robots:
+            results.append(((px + vx * sec) % width, (py + vy * sec) % height))
+        sf = calc_safety_factor(results, height=height, width=width)
+        if debug:
+            print(f'at {sec} seconds, sf= {sf}, minimum is {min_safety} at {best_iter} sec')
+        if sf < min_safety:
+            min_safety = sf
+            best_iter = sec
+    return best_iter
+
+
 
 def PART_ONE(robots, rows, cols, debug=False):
     # we're always given an odd number of rows and cols; modify calc_safety_factor if this isn't true
@@ -66,7 +89,16 @@ def PART_ONE(robots, rows, cols, debug=False):
     safety_factor = calc_safety_factor(bots=moved_robots, height=height, width=width)
     print(f'safety factor after {iters} iterations: {safety_factor}')
 
-    
+def PART_TWO(robots, rows, cols, debug=False):
+    """
+    extremely poorly worded problem: i'm guessing that the xmas tree appears in one quadrant
+     of the grid, and so the safety-factor of part 1 is at a minimum
+    """
+    height = rows
+    width = cols
+    seconds = find_tree(robots, height, width, debug)
+    print(f'seconds to arrive at the minimum safety factor: {seconds}')
+
 if __name__ == '__main__':
     # > python3 robots.py example.txt 11 7
     # > python3 robots.py input.txt 103 101
@@ -81,4 +113,4 @@ if __name__ == '__main__':
 
     PART_ONE(robots, rows=numrows, cols=numcols, debug=False)
     print()
-    # PART_TWO(problems, False)
+    PART_TWO(robots, rows=numrows, cols=numcols, debug=True)
