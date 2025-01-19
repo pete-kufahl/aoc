@@ -15,6 +15,7 @@ def parse_robot_file(file_path):
             robots.append(nums)
     return robots
 
+
 def simulate(robots, height, width, iters=100):
     """
     simulate robot movements in a wrap-around arena (no need to store a grid)
@@ -27,6 +28,7 @@ def simulate(robots, height, width, iters=100):
     for px, py, vx, vy in robots:
         results.append(((px + vx * iters) % width, (py + vy * iters) % height))
     return results
+
 
 def calc_safety_factor(bots, height, width):
     """
@@ -54,9 +56,13 @@ def calc_safety_factor(bots, height, width):
 
     return math.prod(quads)    # python 3.8
 
+
 def find_tree(robots, height, width, debug=False):
     """
     step through the simulation and find the arrangement where they make a xmas tree, i guess
+    a tree (triangle) shape means that relatively few robots will be in the top 2 quadrants
+      and a lot of them will be lined up in the horizontal median
+    the less equal the operands of a product are, the smaller the product (keeping the sum equal)
     if this means the arrangement with the smallest safety factor, the algo is simple
     """
     min_safety = float('inf')
@@ -77,7 +83,6 @@ def find_tree(robots, height, width, debug=False):
     return best_iter
 
 
-
 def PART_ONE(robots, rows, cols, debug=False):
     # we're always given an odd number of rows and cols; modify calc_safety_factor if this isn't true
     height = rows
@@ -91,7 +96,7 @@ def PART_ONE(robots, rows, cols, debug=False):
 
 def PART_TWO(robots, rows, cols, debug=False):
     """
-    extremely poorly worded problem: i'm guessing that the xmas tree appears in one quadrant
+    very poorly worded problem: i'm guessing that the xmas tree appears in one quadrant
      of the grid, and so the safety-factor of part 1 is at a minimum
     """
     height = rows
