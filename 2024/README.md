@@ -15,6 +15,7 @@
 | 2024 - 11: Count stones           |      | ✅     |         |     |         |
 | 2024 - 12: Area, perimeter, sides |      | ✅     |         |     |         |
 | 2024 - 13: Claw machine path      |      | ✅     |         |     |         |
+| 2024 - 14: Robots in modulo grid  |      | ✅     |         |     |         |
 
 ### Legend
 
