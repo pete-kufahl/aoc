@@ -12,13 +12,36 @@ def parse_file(file_path):
 
 def track_robot(grid, robot, debug):
     """
-    in the grid, the robot location is @
-    in the robot string is its instructions:
-     <, >, v, ^ are intended moves in that direction
+    * grid is surround by wall (#) -> no need for an in-bounds check
+    * robot param is a series of moves
      it will push any boxes (O) by one space if there's an empty space (.) to push to
      otherwise it is stopped by a wall (#)
     """
-    pass
+    rows = len(grid)
+    cols = len(grid[0])
+
+    # find starting point (@), tbh a nested for ... else loop would also make sense
+    r, c = next(((rr, cc)
+                for rr, row in enumerate(grid)
+                for cc, loc in enumerate(row)
+                if loc == '@'), None)
+    debug and print (r, c)
+
+    # identify and register effects of robot movements
+    for move in robot:
+        # <, >, v, ^ are intended moves in that direction
+        delr = { '^': -1, 'v': 1 }.get(move, 0)
+        delc = { '<': -1, '>': 1 }.get(move, 0)
+        
+        targets = [(r,c)]       # intended move targets, starting with the robot position
+        curr_r, curr_c = r, c   # location we are looking at
+        go = True               # whether the move happens 
+        while True:
+            curr_r += delr
+            curr_c += delc
+            loc = grid[curr_r][curr_c]
+
+
 
 
 def PART_ONE(grid, robot, debug):
