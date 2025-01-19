@@ -10,7 +10,7 @@ def parse_file(file_path):
         robot = bot.replace("\n", "")
     return grid, robot
 
-def track_robot(grid, robot, debug):
+def track_robot_small_boxes(grid, robot, debug):
     """
     * grid is surround by wall (#) -> no need for an in-bounds check
     * robot param is a series of moves
@@ -59,7 +59,7 @@ def track_robot(grid, robot, debug):
             print(*row, sep="")
     return grid
 
-def score_grid(grid):
+def score_grid_small_boxes(grid):
     """
     use generator expression
     sum the score for each box at (row, col): 100 * row + 1 * col
@@ -71,13 +71,57 @@ def score_grid(grid):
                for c in range(cols)
                if grid[r][c] == 'O')
 
+
+def expand_grid(grid):
+    """
+    make grid twice as wide (except for robot)
+    """
+    expand = {
+        '#': '##',
+        '.': '..',
+        'O': '[]',
+        '@': '@.'
+    }
+    result = []
+    for row in grid:
+        wide_str = ''.join(expand[char] for char in row)
+        result.append(list(wide_str))
+    return result
+
+def track_robot_wide_boxes(grid, robot, debug):
+    """
+    alter the algo for tracking the robot in the small warehouse, because we have to
+      handle multiple coordinates at once.
+    the robot can move multiple boxes forward (even if they line up halfway), if there's
+      no wall to stop them; that means we add box-halves ([,]) to the targets when we
+      encounter them, an only move if there's open space in front of all the targets.
+    """
+    # starting position of robot, same as before
+    r, c = next(((rr, cc) for rr, row in enumerate(grid) for cc, loc in enumerate(row) if loc == '@'), None)
+
+    for move in robot:
+        # <, >, v, ^ are intended moves in that direction
+        delr = { '^': -1, 'v': 1 }.get(move, 0)
+        delc = { '<': -1, '>': 1 }.get(move, 0)
+
+    
+
 def PART_ONE(grid, robot, debug):
     if debug:
         for line in grid:
             print(line)
         print(robot)
-    result_grid = track_robot(grid, robot, debug)
-    print(f'final GPS score = {score_grid(result_grid)}')
+    result_grid = track_robot_small_boxes(grid, robot, debug)
+    print(f'final GPS score (small boxes) = {score_grid_small_boxes(result_grid)}')
+
+def PART_TWO(grid, robot, debug):
+    wide_grid = expand_grid(grid)
+    if debug:
+        for line in wide_grid:
+            print(line)
+        print(robot)
+    result_grid = track_robot_wide_boxes(wide_grid, robot, debug)
+    # print(f'final GPS score = {score_grid_wide_boxes(result_grid)}')
 
 
 if __name__ == '__main__':
@@ -86,6 +130,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     grid, robot = parse_file(args.file_path)
 
-    PART_ONE(grid, robot, debug=True)
+    PART_ONE(grid, robot, debug=False)
     print()
-    # PART_TWO(robots, rows=numrows, cols=numcols, debug=True)
+    PART_TWO(grid, robot, debug=True)
