@@ -17,9 +17,6 @@ def track_robot(grid, robot, debug):
      it will push any boxes (O) by one space if there's an empty space (.) to push to
      otherwise it is stopped by a wall (#)
     """
-    rows = len(grid)
-    cols = len(grid[0])
-
     # find starting point (@), tbh a nested for ... else loop would also make sense
     r, c = next(((rr, cc)
                 for rr, row in enumerate(grid)
@@ -35,14 +32,44 @@ def track_robot(grid, robot, debug):
         
         targets = [(r,c)]       # intended move targets, starting with the robot position
         curr_r, curr_c = r, c   # location we are looking at
-        go = True               # whether the move happens 
+        can_move = True         # whether the move happens 
         while True:
             curr_r += delr
             curr_c += delc
             loc = grid[curr_r][curr_c]
+            if loc == '#':      # there's a wall in the way
+                can_move = False
+                break
+            if loc == 'O':      # a box to move, maybe
+                targets.append((curr_r, curr_c))
+            if loc == '.':      # open space -> commence moving
+                break
+        if can_move:
+            # robot, and any boxes in front of it, move by one space
+            debug and print(f'moving ({move}) robot to ({r + delr}, {c + delc}) with {len(targets) - 1} boxes')
+            grid[r][c] = '.'                # robot vacates position
+            grid[r + delr][c + delc] = '@'  # robot's new location
+            for box_r, box_c in targets[1:]:
+                grid[box_r + delr][box_c + delc] = 'O'
+            r += delr
+            c += delc
+    
+    if debug:
+        for row in grid:
+            print(*row, sep="")
+    return grid
 
-
-
+def score_grid(grid):
+    """
+    use generator expression
+    sum the score for each box at (row, col): 100 * row + 1 * col
+    """
+    rows = len(grid)
+    cols = len(grid[0])
+    return sum(100 * r + c 
+               for r in range(rows) 
+               for c in range(cols)
+               if grid[r][c] == 'O')
 
 def PART_ONE(grid, robot, debug):
     if debug:
@@ -50,6 +77,7 @@ def PART_ONE(grid, robot, debug):
             print(line)
         print(robot)
     result_grid = track_robot(grid, robot, debug)
+    print(f'final GPS score = {score_grid(result_grid)}')
 
 
 if __name__ == '__main__':
