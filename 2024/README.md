@@ -17,6 +17,7 @@
 | 2024 - 13: Claw machine path      |      | ✅     |         |     |         |
 | 2024 - 14: Robots in modulo grid  |      | ✅     |         |     |         |
 | 2024 - 15: Track warehouse action |      | ✅     |         |     |         |
+| 2024 - 16: Weighted maze traverse |      | ✅     |         |     |         |
 
 ### Legend
 
