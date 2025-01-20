@@ -1,5 +1,6 @@
 import argparse
 import heapq
+from collections import deque
 
 def read_grid(file_path):
     with open(file_path, 'r') as file:
@@ -55,7 +56,7 @@ def find_lowest_cost_and_path(grid):
     sr, sc = next(((rr, cc) for rr, row in enumerate(grid) for cc, loc in enumerate(row) if loc == 'S'), None)   
     pQueue = [(0, sr, sc, 0, 1)]
 
-    # initialize lowest-cost path (as map of location->cost), backtrack set, and lowest cost
+    # initialize lowest-cost path (as map of location->cost), backtrack set, lowest cost and set of end states
     lowest_cost_path = { (sr, sc, 0, 1): 0 }
     backtrack = {}
     best_cost = float('inf')
@@ -90,8 +91,20 @@ def find_lowest_cost_and_path(grid):
             backtrack[(nr, nc, ndr, ndc)].add((r, c, dr, dc))
 
             heapq.heappush(pQueue, (new_cost, nr, nc, ndr, ndc))
-    print(end_states)
-    return lowest_cost_path, best_cost
+    
+    # backfill path using BFS (DFS may cause stack overflow with larger grid)
+    states = deque(end_states)
+    seen = set(end_states)
+    while states:
+        dest = states.popleft()
+        for last in backtrack.get(dest, []):    # start position has no predecessors
+            if last in seen: continue
+            seen.add(last)
+            states.append(last)
+
+    # seen includes the rotations: return only the set of unique positions
+    unique = { (r, c) for r, c, _, _ in seen }
+    return unique, best_cost
 
 
 def PART_ONE(grid, debug):
@@ -102,6 +115,7 @@ def PART_ONE(grid, debug):
 
 def PART_TWO(grid, debug):
     path, cost = find_lowest_cost_and_path(grid)
+    print(f'lowest cost path through the grid has {len(path)} tiles and costs {cost}')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="minimze cost of path through a maze")
