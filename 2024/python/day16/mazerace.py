@@ -7,7 +7,7 @@ def read_grid(file_path):
     return grid
 
 
-def find_lowest_path(grid, debug=False):
+def find_lowest_path(grid):
     """
     given a walled maze (obviating the in-bounds check), find the lowest-cost path
       to a goal E from start space S.
@@ -45,11 +45,63 @@ def find_lowest_path(grid, debug=False):
     return 0
 
 
+def find_lowest_cost_and_path(grid):
+    """
+    returns both the lowest cost path to get through the maze, and all of the locations in that path.
+    this requires an expansion of the Dijkstra's algorithm (above), in order to retain
+      backtracking information.
+    comments refer to additions/changes to find_lowest_path()
+    """
+    sr, sc = next(((rr, cc) for rr, row in enumerate(grid) for cc, loc in enumerate(row) if loc == 'S'), None)   
+    pQueue = [(0, sr, sc, 0, 1)]
+
+    # initialize lowest-cost path (as map of location->cost), backtrack set, and lowest cost
+    lowest_cost_path = { (sr, sc, 0, 1): 0 }
+    backtrack = {}
+    best_cost = float('inf')
+    end_states = set()
+    
+    while pQueue:
+        # pop the cheapest option from queue
+        cost, r, c, dr, dc = heapq.heappop(pQueue)
+
+        # if the cost here is not the cheapest way to get to this location, skip
+        if cost > lowest_cost_path.get((r, c, dr, dc), float('inf')): continue 
+
+        # check for end state
+        if grid[r][c] == 'E':
+            if cost > best_cost: break              # no longer at cheapest way to E: end algo
+            best_cost = cost
+            end_states.add((r, c, dr, dc))
+
+        for new_cost, nr, nc, ndr, ndc in [(cost + 1, r + dr, c + dc, dr, dc),
+                                          (cost + 1000, r, c, dc, -dr),
+                                          (cost + 1000, r, c, -dc, dr)]:
+            if grid[nr][nc] == '#': continue
+
+            # if we found the best way to get to (nr, nc) already, don't add this one
+            lowest = lowest_cost_path.get((nr, nc, ndr, ndc), float('inf'))
+            if new_cost > lowest: continue
+            # otherwise, dump the backtrack
+            if new_cost < lowest:
+                backtrack[(nr, nc, ndr, ndc)] = set()
+                lowest_cost_path[(nr, nc, ndr, ndc)] = new_cost
+            # add previous location to the backtrack
+            backtrack[(nr, nc, ndr, ndc)].add((r, c, dr, dc))
+
+            heapq.heappush(pQueue, (new_cost, nr, nc, ndr, ndc))
+    print(end_states)
+    return lowest_cost_path, best_cost
+
+
 def PART_ONE(grid, debug):
     if debug:
         for line in grid:
             print(*line, sep="")
     print(f'lowest-cost path through the maze: {find_lowest_path(grid)}')
+
+def PART_TWO(grid, debug):
+    path, cost = find_lowest_cost_and_path(grid)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="minimze cost of path through a maze")
@@ -59,4 +111,4 @@ if __name__ == '__main__':
 
     PART_ONE(grid, debug=False)
     print()
-    # PART_TWO(grid, debug=True)
+    PART_TWO(grid, debug=True)
