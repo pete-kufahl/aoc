@@ -84,68 +84,6 @@ def PART_ONE(registers, instructions, debug):
     print(*ans, sep=",")
 
 
-def PART_TWO(registers, instructions, debug):
-    """
-    reverse engineer
-    """
-    if debug:
-        success = False
-        # find last value of a
-        mina = 60
-        expected = instructions[-3:]
-        print(f'starting a = {mina << 3}, expected = {expected} out of {instructions}')
-        for a in range(mina << 3, (mina << 3) + 8):
-            registers[0] = a        
-            try:
-                print(f'at a = {a} ....')
-                ans, a = run_program(registers, instructions, True, expected=expected)
-                if a > -1:
-                    print(f'matched result {expected} at a = {a}')
-                    success = True    
-            except RuntimeError as ex:
-                print(f'program failed at a = {a}, {ex}')
-        if not success:
-            print(f'failed somehow .... {expected}')
-    else:
-        # found that a is 7 in the second-to-last iteration
-        a = 7
-        for _ in range(2):
-            a = a << 3
-        print(f'Trying a = {a} ...')
-        registers[0] = a
-        # 2,4,1,7,7,5,0,3,1,7,4,1,5,5,3,0
-        ans = run_program(registers, instructions, True, expected=[3,0])
-        print(*ans, sep=",")
-        
-def PART_TWO_AUTO(registers, instructions, debug):
-    """
-    this failed becuase the program line: 7,5: c = a >> b depends on the entire value of a
-    that means there were stages where none of the 8 possibilities for a work, and i have
-     to backtrack
-    """
-    mina = 7
-    i = 2
-    success = True
-
-    while success and i <= len(instructions):
-        expected = instructions[-i:]
-        print(f'starting a = {mina << 3}, expected = {expected} out of {instructions}')
-        for a in range(mina << 3, (mina << 3) + 8):
-            registers[0] = a        
-            try:
-                print(f'at a = {a} ....')
-                ans, a = run_program(registers, instructions, True, expected=expected)
-                if a > -1:
-                    print(f'matched result {expected} at a = {a}')
-                    i += 1
-                    mina = a
-                    break    
-            except RuntimeError as ex:
-                print(f'program failed at a = {a}, {ex}')
-        else:
-            print(f'failed somehow .... {expected}')
-            success = False
-
 def PART_TWO_RECURSIVE(program):
     """
     registers B, C are initially 0, so we don't need that param
