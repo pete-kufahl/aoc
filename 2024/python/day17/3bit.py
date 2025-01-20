@@ -1,11 +1,23 @@
 import argparse
+import re
 
 
 def read_file(file_path):
-    return None, None
+    """
+    read input file; everything that matters is a number
+    """
+    with open(file_path, 'r') as file:
+        a, b, c, *program = map(int, re.findall(r"\d+", file.read()))
+    return [a, b, c], program
+
+def run_program(a, b, c, instructions):
+    pass
 
 def PART_ONE(registers, instructions, debug):
-    pass
+    """
+    run the program
+    """
+    run_program(*registers, instructions)
 
 
 def PART_TWO(registers, instructions, debug):
@@ -17,6 +29,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     registers, instructions = read_file(args.file_path)
+    print(registers)
+    print(instructions)
 
     PART_ONE(registers, instructions, debug=False)
     print()
