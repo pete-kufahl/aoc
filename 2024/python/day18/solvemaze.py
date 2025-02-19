@@ -14,11 +14,10 @@ def reset_grid(grid, size, coords):
     # Reset grid in place
     for row in range(size):
         for col in range(size):
-            grid[row][col] = 0  # Set all cells to 0
+            grid[row][col] = 0
 
-    # Set specified coordinates to 1
     for col, row in coords:
-        if 0 <= row < size and 0 <= col < size:  # Prevent IndexError
+        if 0 <= row < size and 0 <= col < size:
             grid[row][col] = 1
 
 
@@ -66,7 +65,7 @@ def PART_TWO(grid, size, all_coords, debug):
             lo = mid + 1
         else:
             hi = mid
-            
+
     print(f'first byte to render maze impassable is {all_coords[lo]}')
     
 
