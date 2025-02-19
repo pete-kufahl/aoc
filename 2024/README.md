@@ -18,6 +18,8 @@
 | 2024 - 14: Robots in modulo grid  |      | ✅     |         |     |         |
 | 2024 - 15: Track warehouse action |      | ✅     |         |     |         |
 | 2024 - 16: Weighted maze traverse |      | ✅     |         |     |         |
+| 2024 - 17: Solve for a quine      |      | ✅     |         |     |         |
+| 2024 - 18: Find impassable maze   |      | ✅     |         |     |         |
 
 ### Legend
 
