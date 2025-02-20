@@ -20,6 +20,7 @@
 | 2024 - 16: Weighted maze traverse |      | ✅     |         |     |         |
 | 2024 - 17: Solve for a quine      |      | ✅     |         |     |         |
 | 2024 - 18: Find impassable maze   |      | ✅     |         |     |         |
+| 2024 - 19: Sum matching patterns  |      | ✅     |         |     |         |
 
 ### Legend
 
