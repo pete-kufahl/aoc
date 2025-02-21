@@ -1,5 +1,6 @@
 import argparse
 from collections import deque
+from itertools import product
 
 def get_codes(file_path):
     codes = []
@@ -24,7 +25,7 @@ def get_keypad(name):
     else:
         return None
     
-def solve(target_sequence, keypad):
+def solve(target_sequence, keypad, debug):
     """
     for a given target_sequence (string) and a keypad (grid), return a list of
       sequences of possible keypad presses made up of (^ v < > A) that
@@ -57,7 +58,7 @@ def solve(target_sequence, keypad):
             # queue the paths as strings, which will be of increasing length (BFS)
             #. that means we can ignore suboptimal paths once we find a path to the
             #. target that is longer than optimal length
-            q = deque([(pos(x), "")])
+            q = deque([(pos[x], "")])
             optimal = float("inf")
             while q:
                 (r, c), moves = q.popleft()
@@ -66,16 +67,38 @@ def solve(target_sequence, keypad):
                     if nr < 0 or nc < 0 or nr >= len(keypad) or nc >= len(keypad[0]):
                         continue
                     if keypad[nr][nc] == None:
+                        # avoid the gap
                         continue
                     if keypad[nr][nc] == y:
+                        # end position -> add to possibilities, not the queue
                         if optimal < len(moves) + 1:
                             break
-
+                        optimal = len(moves) + 1
+                        possibilities.append(moves + nm + "A")
+                    else:
+                        # otherwise, add to the queue
+                        q.append(((nr, nc), moves + nm))
+                else:
+                    continue
+                break   # propogate found-it break
+            # after BFS:
+            # seqs now holds every possible "optimal" combination of moves
+            #. to get from x to y
             seqs[(x, y)] = possibilities
-
+    # debug and print(seqs)
+    # solver needs each move from one position to the next
+    #. robot's finger starts over the A key
+    target_moves = zip("A" + target_sequence, target_sequence)
+    # all optimal sequences of moves for the pairs of target characters
+    options = [seqs[(x, y)] for x, y in target_moves]
+    if debug:
+        print(target_sequence)
+        print(options)
 
 def PART_ONE(codes, debug=False):
-    ...
+    for target_code in codes:
+        solve(target_code, get_keypad("door"), debug)
+        break
 
 
 def PART_TWO(codes, debug=False):
@@ -89,6 +112,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     codes = get_codes(args.file_path)
 
-    PART_ONE(codes, False)
+    PART_ONE(codes, True)
     print()
     PART_TWO(codes, False)
