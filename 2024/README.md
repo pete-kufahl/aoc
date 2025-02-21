@@ -21,6 +21,7 @@
 | 2024 - 17: Solve for a quine      |      | ✅     |         |     |         |
 | 2024 - 18: Find impassable maze   |      | ✅     |         |     |         |
 | 2024 - 19: Sum matching patterns  |      | ✅     |         |     |         |
+| 2024 - 20: Maze short-cuts        |      | ✅     |         |     |         |
 
 ### Legend
 
