@@ -1,1 +1,1 @@
-../../inputs/day22-ex0.txt
+../../inputs/day24-ex0.txt
