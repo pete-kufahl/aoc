@@ -23,6 +23,7 @@
 | 2024 - 19: Sum matching patterns  |      | ✅     |         |     |         |
 | 2024 - 20: Maze short-cuts        |      | ✅     |         |     |         |
 | 2024 - 21: Keypads and robots     |      | ✅     |         |     |         |
+| 2024 - 22: Monkey exchange        |      | ✅     |         |     |         |
 
 ### Legend
 
