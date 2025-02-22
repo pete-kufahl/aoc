@@ -1,8 +1,6 @@
 import argparse
 from collections import defaultdict
 
-
-
 def get_values(file_path):
     values = []
     with open(file_path, 'r') as file:
@@ -10,11 +8,13 @@ def get_values(file_path):
             values.append(int(line))
     return values
 
+
 def get_secret(input):
     num = (input ^ (input * 64)) % 16777216
     num = (num ^ (num // 32)) % 16777216
     num = (num ^ (num * 2048)) % 16777216
     return num
+
 
 def get_secret_bits(input):
     num = (input ^ (input << 6)) & 0xFFFFFF
