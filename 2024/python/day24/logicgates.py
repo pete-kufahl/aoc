@@ -33,6 +33,10 @@ def calc(knowns, formulae, wire):
 
 
 def PART_ONE(knowns, formulae, debug=False):
+    """
+    evaluate the output of a logic circuit, given a set of initial known values
+    and set of logical operations between wires
+    """
     if debug:
         print(knowns)
         print(formulae)
@@ -53,8 +57,114 @@ def PART_ONE(knowns, formulae, debug=False):
     print(f'number represented by the z-wires is {ans}')
     
 
-def PART_TWO(knowns, formulae, debug=False):
-    ...
+def printwire(wire, formulae, depth=0):
+    F = formulae
+    if wire[0] in "xy":
+        return "  " * depth + wire
+    op, x, y = formulae[wire]
+    return "  " * depth + op + " (" + wire + ")\n" + printwire(x, F, depth+1) + "\n" + printwire(y, F, depth+1)
+
+
+def verify_intermediate_xor(wire, num, formulae):
+    if wire not in formulae:
+        return False
+    op, x, y = formulae[wire]
+    if op != "XOR":
+        return False
+    return verify_operands(num, x, y)
+
+
+def verify_direct_carry(wire, num, formulae):
+    if wire not in formulae:
+        return False
+    op, x, y = formulae[wire]
+    if op != "AND":
+        return False
+    return verify_operands(num, x, y)
+
+
+def verify_operands(num, x, y):
+    x_wire = 'x' + str(num).rjust(2, "0")
+    y_wire = 'y' + str(num).rjust(2, "0")
+    return sorted([x, y]) == [x_wire, y_wire]
+
+
+def verify_recarry(wire, num, formulae):
+    if wire not in formulae:
+        return False
+    op, x, y = formulae[wire]
+    if op != "AND":
+        return False
+    return (verify_intermediate_xor(x, num, formulae) and verify_carry_bit(y, num, formulae)) or\
+        (verify_intermediate_xor(y, num, formulae) and verify_carry_bit(x, num, formulae))
+
+
+def verify_carry_bit(wire, num, formulae):
+    if wire not in formulae:
+        return False
+    op, x, y = formulae[wire]
+    if num == 1:
+        return op == "AND" and verify_operands(0, x, y)
+    if op != "OR":
+        return False
+    return (verify_direct_carry(x, num - 1, formulae) and verify_recarry(y, num - 1, formulae)) or\
+        (verify_direct_carry(y, num - 1, formulae) and verify_recarry(x, num - 1, formulae))
+
+
+def verify_z(wire, num, formulae):
+    if wire not in formulae:
+        return False
+    op, x, y = formulae[wire]
+    if op != "XOR":
+        return False
+    if num == 0:
+        return verify_operands(0, x, y)
+    # and-statments start with non-recursive function
+    return (verify_intermediate_xor(x, num, formulae) and verify_carry_bit(y, num, formulae)) or\
+        (verify_intermediate_xor(y, num, formulae) and verify_carry_bit(x, num, formulae))
+
+
+def verify(num, formulae):
+    z_wire = 'z' + str(num).rjust(2, "0")
+    return verify_z(z_wire, num, formulae)
+
+
+def find_progress(formulae, debug):
+    level = 0
+    while True:
+        debug and print('----')
+        if not verify(level, formulae): break
+        level += 1
+    return level
+    
+
+def PART_TWO(formulae, debug=False):
+    """
+    given a set of formulae, including those for x-wires, y-wires, and z-wires, figure out
+    which 8 gates have their wires swapped in order to make the entire system add any
+    x-number to any y-number to make the correct z-number
+    """
+    gates = []
+    level = find_progress(formulae, debug)
+    print(f'made it to level {level}')
+    
+    for _ in range(4):
+        baseline = find_progress(formulae, debug)
+        for x in formulae:
+            for y in formulae:
+                if x == y:
+                    continue
+                formulae[x], formulae[y] = formulae[y], formulae[x]
+                if find_progress(formulae, debug) > baseline:
+                    break
+                formulae[x], formulae[y] = formulae[y], formulae[x] # swap back
+            else:
+                continue
+            break
+        print(x, y)
+        gates += [x, y]
+
+    print(",".join(sorted(gates)))
 
 if __name__ == '__main__':
 
@@ -64,4 +174,4 @@ if __name__ == '__main__':
     knowns, formulae = get_input(args.file_path)
     PART_ONE(knowns, formulae, False)
     print()
-    PART_TWO(knowns, formulae, True)
+    PART_TWO(formulae, False)

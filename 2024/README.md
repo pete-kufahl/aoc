@@ -25,6 +25,7 @@
 | 2024 - 21: Keypads and robots     |      | ✅     |         |     |         |
 | 2024 - 22: Monkey exchange        |      | ✅     |         |     |         |
 | 2024 - 23: Connected networks     |      | ✅     |         |     |         |
+| 2024 - 24: Logic gates and adding |      | ✅     |         |     |         |
 
 ### Legend
 
