@@ -23,6 +23,10 @@
 | 2024 - 19: Sum matching patterns  |      | ✅     |         |     |         |
 | 2024 - 20: Maze short-cuts        |      | ✅     |         |     |         |
 | 2024 - 21: Keypads and robots     |      | ✅     |         |     |         |
+| 2024 - 22: Monkey exchange        |      | ✅     |         |     |         |
+| 2024 - 23: Connected networks     |      | ✅     |         |     |         |
+| 2024 - 24: Logic gates and adding |      | ✅     |         |     |         |
+| 2024 - 25: Compare column data    |      | ✅     |         |     |         |
 
 ### Legend
 

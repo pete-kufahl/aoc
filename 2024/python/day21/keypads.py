@@ -126,12 +126,13 @@ def PART_ONE(codes, debug=False):
                 possible_instrs += solve(target, DIRECTIONAL_SEQUENCES, debug)
             optimal_len = min(map(len, possible_instrs))
             curr_robot = [seq for seq in possible_instrs if len(seq) == optimal_len]
-            print(len(curr_robot[0]))
+            debug and print(len(curr_robot[0]))
         # compute complexity
         length = len(curr_robot[0])
         complexity = length * int(target_code[:-1])
         total += complexity
     print(f'total complexity score for {len(codes)} is {total}')
+
 
 @cache
 def compute_length_at_depth(seq, depth=25):
@@ -162,7 +163,6 @@ def PART_TWO(codes, debug=False):
         length = min(map(compute_length_at_depth, robot1))
         total += length * int(target_code[:-1])
     print(f'total complexity score for {len(codes)} code is {total}')
-
 
 
 if __name__ == '__main__':
