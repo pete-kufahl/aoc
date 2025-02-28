@@ -2,15 +2,15 @@
 
 ## progress
 
-| Puzzle                    | Java | Python | Node.js | C++ | Rust |
-|-----------------------------------|------|--------|---------|-----|---------|
-| 2015 - 1: Santa on a lift         | ✅   | ✅     | ✅      | ✅  | ✅      |
-| 2015 - 2: XMas wrapping           | ✅   | ✅     | ✅      | ✅  | ✅      |
-| 2015 - 3: Visiting houses         | ✅   | ✅     | ✅      | ✅  |         |
-| 2015 - 4: Coin hashes             | ✅   | ✅     |         |     |         |
-| 2015 - 5: Finding nice strings    | ✅   | ✅     |         |     |         |
-| 2015 - 6: A thousand lights       | ✅   | ✅     |         |     |         |
-| 2015 - 7: Logic gates and wires   |      | ✅     |         |     |         |
+| Puzzle                            | Java | Python | Node.js | C++ | Rust | elements of interest/novelty |
+|-----------------------------------|------|--------|---------|-----|---------|-----------------------|
+| 2015 - 1: Santa on a lift         | ✅   | ✅     | ✅      | ✅  | ✅      | process file as stream |
+| 2015 - 2: XMas wrapping           | ✅   | ✅     | ✅      | ✅  | ✅      | |
+| 2015 - 3: Visiting houses         | ✅   | ✅     | ✅      | ✅  |         | |
+| 2015 - 4: Coin hashes             | ✅   | ✅     |         |     |         | zero-filling |
+| 2015 - 5: Finding nice strings    | ✅   | ✅     |         |     |         | regex matching groups |
+| 2015 - 6: A thousand lights       | ✅   | ✅     |         |     |         |  |
+| 2015 - 7: Logic gates and wires   | ✅   | ✅     |         |     |         | recursion, bit-mask |
 
 ### Legend
 
