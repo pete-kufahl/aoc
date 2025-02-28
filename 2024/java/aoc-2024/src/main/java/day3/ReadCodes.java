@@ -1,3 +1,5 @@
+package day3;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,9 +26,9 @@ public class ReadCodes {
                 option = 1;
             }
         }
-        boolean useDosDonts = option == 1 ? false : true; // puzzle 1: false, puzzle 2: true
+        boolean useDosDonts = option != 1; // puzzle 1: false, puzzle 2: true
 
-        String fileName = "input.txt";
+        String fileName = "src/main/resources/day3/input.txt";
         StringBuilder buffer = new StringBuilder();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -75,14 +77,14 @@ public class ReadCodes {
         }
 
         // Sort events by position
-        Collections.sort(events, Comparator.comparingInt(e -> e.position));
+        events.sort(Comparator.comparingInt(e -> e.position));
 
         boolean enabled = true;  // enabled mode to start with
         long subProducts = 0;
 
         for (Event event : events) {
             if (enabled && event.type.equals("mul")) {
-                subProducts += event.x * event.y;
+                subProducts += (long) event.x * event.y;
                 // System.out.println("mul(X: " + event.x + ", Y: " + event.y + ") at Position: " + event.position);
             } else if (useDosDonts && event.type.equals("do")) {
                 enabled = true;

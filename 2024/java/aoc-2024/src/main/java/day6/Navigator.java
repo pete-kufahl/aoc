@@ -1,3 +1,5 @@
+package day6;
+
 import java.util.*;
 
 public class Navigator {
@@ -44,13 +46,13 @@ public class Navigator {
 
     // Method to get the direction index from a character
     private int getDirectionIndex(char direction) {
-        switch (direction) {
-            case '^': return 0; // Up
-            case '>': return 1; // Right
-            case 'v': return 2; // Down
-            case '<': return 3; // Left
-            default: throw new IllegalArgumentException("Invalid start direction: " + direction);
-        }
+        return switch (direction) {
+            case '^' -> 0; // Up
+            case '>' -> 1; // Right
+            case 'v' -> 2; // Down
+            case '<' -> 3; // Left
+            default -> throw new IllegalArgumentException("Invalid start direction: " + direction);
+        };
     }
 
     // Directional movement methods
@@ -88,10 +90,6 @@ public class Navigator {
     }
 
     public Object[] nextStep(int[] currentPos) {
-        /**
-         * Cyclically iterates through the directions to determine the next step.
-         * Returns an array: {new position as int[], boolean indicating escape}.
-         */
         List<Runnable> directionCycle = new ArrayList<>();
         
         // Prepare the direction cycle (cyclic iterator equivalent)
@@ -119,5 +117,21 @@ public class Navigator {
     
         return new Object[]{null, false};
     }
-    
+
+    private int[] computeNewPosition(int[] currentPos, Runnable direction) {
+        return currentPos;
+    }
+
+    private boolean isCycle(Runnable direction, int[] newPos) {
+        return false;
+    }
+
+    private boolean isValidMove(int x, int y) {
+        return false;
+    }
+
+    private boolean isEscaping(int x, int y) {
+        return false;
+    }
+
 }

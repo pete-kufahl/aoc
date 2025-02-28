@@ -1,3 +1,5 @@
+package day2;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -36,7 +38,7 @@ public class EvalSafety {
     }
 
     public static void main(String[] args) {
-        String fileName = "input.txt";
+        String fileName = "src/main/resources/day2/input.txt";
         int i = 0;
         int safeLines = 0;
         int safeLinesIfModified = 0;
