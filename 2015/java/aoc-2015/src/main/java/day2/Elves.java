@@ -1,3 +1,4 @@
+package day2;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -5,7 +6,7 @@ import java.util.Arrays;
 
 public class Elves {
     public static void main(String[] args) {
-        String fileName = "input.txt";
+        String fileName = "src/main/resources/day2/input.txt";
         int totalPaper = 0;
         int totalRibbon = 0;
         int i = 0;
@@ -18,8 +19,8 @@ public class Elves {
                 if (parts.length == 3) {
                     try {
                         int[] dims = Arrays.stream(parts)
-                            .mapToInt(Integer::parseInt)
-                            .toArray();
+                                .mapToInt(Integer::parseInt)
+                                .toArray();
                         int x1 = dims[0], x2 = dims[1], x3 = dims[2];
 
                         // total paper
@@ -30,9 +31,9 @@ public class Elves {
 
                         // total ribbon
                         int[] perimeters = {
-                            2 * x1 + 2 * x2,
-                            2 * x1 + 2 * x3,
-                            2 * x2 + 2 * x3
+                                2 * x1 + 2 * x2,
+                                2 * x1 + 2 * x3,
+                                2 * x2 + 2 * x3
                         };
                         int smallPerim = Arrays.stream(perimeters).min().orElseThrow(() -> new IllegalArgumentException("perimeters array cannot be empty"));
                         int bow = x1 * x2 * x3;

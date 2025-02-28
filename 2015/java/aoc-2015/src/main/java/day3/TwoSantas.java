@@ -1,4 +1,4 @@
-package java.day3;
+package day3;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,8 +6,7 @@ import java.lang.String;
 import java.util.HashSet;
 import java.util.Set;
 
-public class OneSanta {
-    
+public class TwoSantas {
     public static int[] moveDirection(char direction, int x, int y) {
         switch (direction) {
             case '<': // Move left
@@ -37,24 +36,30 @@ public class OneSanta {
         FileReader inputStream = null;
         Set<String> visited = new HashSet<>();
         int moves = 0;
-        int[] coords = {0, 0};
-        visited.add(encode(coords));
+        int[] santa = {0, 0};
+        int[] robosanta = {0, 0};
+        boolean is_santa;
+        visited.add(encode(santa));
 
         try {
-            inputStream = new FileReader("input.txt");
+            inputStream = new FileReader("src/main/resources/day3/input.txt");
             int c;
             while ((c = inputStream.read()) != -1) {
                 moves += 1;
-                int x = coords[0];
-                int y = coords[1]; 
-                coords = moveDirection((char) c, x, y);
-                visited.add(encode(coords));
+                is_santa = moves % 2 == 1;
+                if (is_santa) {
+                    santa = moveDirection((char) c, santa[0], santa[1]);
+                    visited.add(encode(santa));
+                } else {
+                    robosanta = moveDirection((char) c, robosanta[0], robosanta[1]);
+                    visited.add(encode(robosanta));
+                }
             }
-            System.out.println(String.format("houses visited after %d moves is %d", moves, visited.size()));
+            System.out.printf("houses visited after %d moves is %d%n", moves, visited.size());
         } finally {
             if (inputStream != null) {
                 inputStream.close();
             }
         }
-    }
+    }    
 }

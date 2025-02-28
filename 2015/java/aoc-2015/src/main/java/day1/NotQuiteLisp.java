@@ -1,7 +1,4 @@
-/*
- * > javac NotQuiteLisp.java
- * > java NotQuiteLisp
- */
+package day1;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,13 +17,11 @@ public class NotQuiteLisp {
     }
 
     public static void main(String[] args) throws IOException {
-        FileReader inputStream = null;
+
         int num = 0;
         int ret = 0;
         boolean basement = false;
-            
-        try {
-            inputStream = new FileReader("input.txt");
+        try (var inputStream = new FileReader("src/main/resources/day1/input.txt")) {
             int c;
             while ((c = inputStream.read()) != -1) {
                 // System.out.println(c);
@@ -34,14 +29,10 @@ public class NotQuiteLisp {
                 num += 1;
                 if (ret == -1 && !basement) {
                     basement = true;
-                    System.out.println(String.format("basement entered at position %d", num+1));
+                    System.out.printf("basement entered at position %d%n", num + 1);
                 }
             }
-            System.out.println(String.format("final floor after %d characters is %d", num, ret));
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
+            System.out.printf("final floor after %d characters is %d%n", num, ret);
         }
     }
 }
