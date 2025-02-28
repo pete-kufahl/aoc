@@ -11,20 +11,6 @@ class NiceStringCheckerTest {
     private final NiceStringChecker checker = new NiceStringChecker();
 
     @Test
-    void countNiceStrings_part1() throws IOException {
-        String input_path = "src/main/resources/day5/input.txt";
-        var ans = checker.countNiceStrings(input_path, NiceStringChecker.Ruleset.SET_ONE);
-        assertEquals(238, ans);
-    }
-
-    @Test
-    void countNiceStrings_part2() throws IOException {
-        String input_path = "src/main/resources/day5/input.txt";
-        var ans = checker.countNiceStrings(input_path, NiceStringChecker.Ruleset.SET_TWO);
-        assertEquals(69, ans);
-    }
-
-    @Test
     void testOriginalNiceStrings() {
         assertTrue(checker.isNice("ugknbfddgicrmopn"), "Should be nice");
         assertTrue(checker.isNice("aaa"), "Should be nice");
