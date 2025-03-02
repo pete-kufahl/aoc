@@ -53,6 +53,7 @@ class Navigator {
         // directions is a list of method references.
         // these four methods implement a functional interface Direction (custom, defined below)
         // in nextStep(), they are polled and move() is called on them
+        //. the modulo operator and class reflection are used to simulate a cyclic queue
         this.directions = Arrays.asList(this::goUp, this::goRight, this::goDown, this::goLeft);
         this.startIndex = getDirectionIndex(startDirection);
         this.currentIndex = this.startIndex;
