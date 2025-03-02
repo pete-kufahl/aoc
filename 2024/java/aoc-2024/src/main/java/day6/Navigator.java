@@ -2,136 +2,99 @@ package day6;
 
 import java.util.*;
 
-public class Navigator {
-    /**
-     * Class for storing and cycling through the navigator of a 2D text maze
-     */
+class Navigator {
+    public static class Position {
+        int x, y;
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     private char[][] maze;
-    private int mazeHeight;
-    private int mazeWidth;
+    private int mazeHeight, mazeWidth;
     private char obstacle;
-    private int currentIndex;
-    private int startIndex;
-
-    // Directional interfaces
-    private List<Runnable> directions;
-    private Map<String, Set<String>> pathTraversed;
-
-    // Flag to identify loop
+    private List<Direction> directions;
+    private int startIndex, currentIndex;
+    private Map<String, Set<Position>> pathTraversed;
     public boolean trappedInLoop;
 
-    // Constructor
     public Navigator(char[][] grid, char obstacle, char startDirection) {
         this.maze = grid;
         this.mazeHeight = grid.length;
         this.mazeWidth = grid[0].length;
         this.obstacle = obstacle;
 
-        // Initialize directions
         this.directions = Arrays.asList(this::goUp, this::goRight, this::goDown, this::goLeft);
-
-        // Set the initial direction index based on the input character
         this.startIndex = getDirectionIndex(startDirection);
         this.currentIndex = this.startIndex;
 
-        // Initialize path traversed
         this.pathTraversed = new HashMap<>();
-        this.pathTraversed.put("go_up", new HashSet<>());
-        this.pathTraversed.put("go_right", new HashSet<>());
-        this.pathTraversed.put("go_down", new HashSet<>());
-        this.pathTraversed.put("go_left", new HashSet<>());
+        for (Direction dir : directions) {
+            pathTraversed.put(dir.getName(), new HashSet<>());
+        }
 
         this.trappedInLoop = false;
     }
 
-    // Method to get the direction index from a character
     private int getDirectionIndex(char direction) {
-        return switch (direction) {
-            case '^' -> 0; // Up
-            case '>' -> 1; // Right
-            case 'v' -> 2; // Down
-            case '<' -> 3; // Left
-            default -> throw new IllegalArgumentException("Invalid start direction: " + direction);
-        };
+        return "^>v<".indexOf(direction);
     }
 
-    // Directional movement methods
-    private void goUp() {
-        // Implement logic for moving up
-    }
-
-    private void goRight() {
-        // Implement logic for moving right
-    }
-
-    private void goDown() {
-        // Implement logic for moving down
-    }
-
-    private void goLeft() {
-        // Implement logic for moving left
-    }
-
-    // Getters (if needed)
-    public char[][] getMaze() {
-        return maze;
-    }
-
-    public char getObstacle() {
-        return obstacle;
-    }
-
-    public int getCurrentIndex() {
-        return currentIndex;
-    }
-
-    public Map<String, Set<String>> getPathTraversed() {
-        return pathTraversed;
-    }
-
-    public Object[] nextStep(int[] currentPos) {
-        List<Runnable> directionCycle = new ArrayList<>();
-        
-        // Prepare the direction cycle (cyclic iterator equivalent)
-        for (int i = 0; i < 4; i++) {
-            directionCycle.add(directions.get((currentIndex + i) % directions.size()));
+    private boolean isCycle(Direction dir, Position pos) {
+        Set<Position> visited = pathTraversed.get(dir.getName());
+        if (visited.contains(pos)) {
+            return true;
+        } else {
+            visited.add(pos);
+            return false;
         }
-    
-        for (int i = 0; i < 4; i++) {
-            Runnable direction = directionCycle.get(i);
-    
-            // Use a helper method to compute the new position based on the direction
-            int[] newPos = computeNewPosition(currentPos, direction);
-            int x = newPos[0], y = newPos[1];
-    
-            if (isEscaping(x, y)) {
-                return new Object[]{newPos, true};
-            }
-    
-            if (isValidMove(x, y)) {
-                currentIndex = directions.indexOf(direction); // Update direction index
-                trappedInLoop = isCycle(direction, newPos); // Check if trapped in a loop
-                return new Object[]{newPos, false};
-            }
-        }
-    
-        return new Object[]{null, false};
-    }
-
-    private int[] computeNewPosition(int[] currentPos, Runnable direction) {
-        return currentPos;
-    }
-
-    private boolean isCycle(Runnable direction, int[] newPos) {
-        return false;
-    }
-
-    private boolean isValidMove(int x, int y) {
-        return false;
     }
 
     private boolean isEscaping(int x, int y) {
-        return false;
+        return x < 0 || x >= mazeHeight || y < 0 || y >= mazeWidth;
     }
 
+    private boolean isValidMove(int x, int y) {
+        return maze[x][y] != obstacle;
+    }
+
+    private Position goUp(Position pos) {
+        return new Position(pos.x - 1, pos.y);
+    }
+
+    private Position goRight(Position pos) {
+        return new Position(pos.x, pos.y + 1);
+    }
+
+    private Position goDown(Position pos) {
+        return new Position(pos.x + 1, pos.y);
+    }
+
+    private Position goLeft(Position pos) {
+        return new Position(pos.x, pos.y - 1);
+    }
+
+    public Position nextStep(Position currentPos) {
+        for (int i = 0; i < 4; i++) {
+            Direction dir = directions.get((currentIndex + i) % 4);
+            Position newPos = dir.move(currentPos);
+
+            if (isEscaping(newPos.x, newPos.y)) {
+                return newPos;
+            }
+            if (isValidMove(newPos.x, newPos.y)) {
+                currentIndex = directions.indexOf(dir);
+                trappedInLoop = isCycle(dir, newPos);
+                return newPos;
+            }
+        }
+        return null;
+    }
+
+    private interface Direction {
+        Position move(Position pos);
+        default String getName() { return getClass().getSimpleName(); }
+    }
 }
