@@ -61,7 +61,7 @@ public class EvalSafety {
                                 sublist.remove(x);
                                 return sublist;
                             })
-                            .collect(Collectors.toList());
+                            .toList();
                         for (List<Integer> sublist : sublists) {
                             boolean ans1 = check_line(sublist, 1, 3);
                             if (ans1) {
