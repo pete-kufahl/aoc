@@ -4,23 +4,6 @@ import java.io.*;
 import java.util.*;
 
 public class XMasWord {
-    public static void main(String[] args) {
-        if (args.length != 1) {
-            System.out.println("Usage: java XMasWord <filename>");
-            return;
-        }
-
-        char[][] grid = getGrid(args);
-
-        // part 1
-        List<int[]> part1 = findWord(grid, "XMAS");
-        System.out.println("Found XMAS " + part1.size() + " times");
-
-        // part 2
-        int part2 = findCrosses(grid);
-        System.out.println("Found X-MAS cross patterns " + part2 + " times");
-
-    }
 
     public static List<int[]> findWord(char[][] grid, String word) {
         List<int[]> results = new ArrayList<>();
@@ -104,8 +87,7 @@ public class XMasWord {
         return forwardCenters.size();
     }
 
-    private static char[][] getGrid(String[] args) {
-        String filename = args[0];
+    public static char[][] getGrid(String filename) {
         List<char[]> grid = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
