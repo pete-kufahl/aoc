@@ -1,12 +1,12 @@
 ## progress
 
-| Puzzle                            | Java | Python | Node.js | C++ | Rust |
-|-----------------------------------|------|--------|---------|-----|---------|
-| 2024 - 1: Distance between lists  | ✅   |  ✅    |  ✅     | ✅  |         |
-| 2024 - 2: Radiation levels        | ✅   |  ✅    |  ✅     | ✅  |         |
-| 2024 - 3: Process corrupted code  | ✅   |  ✅    |  ✅     | ✅  |         |
-| 2024 - 4: Word search             | ✅   |  ✅    |         |     |         |
-| 2024 - 5: Rules and sequences     |      |  ✅    |         |     |         |
+| Puzzle                            | Java | Python | Node.js | C++ | Rust | notes |
+|-----------------------------------|------|--------|---------|-----|---------|-----|
+| 2024 - 1: Distance between lists  | ✅   |  ✅    |  ✅     | ✅  |         | |
+| 2024 - 2: Radiation levels        | ✅   |  ✅    |  ✅     | ✅  |         | |
+| 2024 - 3: Process corrupted code  | ✅   |  ✅    |  ✅     | ✅  |         | regex match groups |
+| 2024 - 4: Word search             | ✅   |  ✅    |         |     |         | DFS and topological sort |
+| 2024 - 5: Rules and sequences     | ✅   |  ✅    |         |     |         |
 | 2024 - 6: Maze traversal and trap | ⏳   |  ✅    |         |     |         |
 | 2024 - 7: Evaluate operators      |      |  ✅    |         |     |         |
 | 2024 - 8: Map antinodes           |      |  ✅    |         |     |         |
