@@ -25,11 +25,12 @@ class Day6Test {
 
         char[][] grid = GridReader.readGrid(input);
         List<Character> chars = Arrays.asList('^', 'v', '<', '>');
-        Day6.StartingPoint result = Day6.findStartingPoint(grid, chars);
+        var day6 = new Day6(grid);
+        Day6.StartingPoint result = day6.findStartingPoint(grid, chars);
 
         assertNotNull(result);
-        assertEquals(6, result.row);
-        assertEquals(4, result.col);
+        assertEquals(6, result.position.r);
+        assertEquals(4, result.position.c);
         assertEquals('^', result.orientation);
     }
 }

@@ -4,11 +4,34 @@ import java.util.*;
 
 class Navigator {
     public static class Position {
-        int x, y;
+        int r, c;
 
-        public Position(int x, int y) {
-            this.x = x;
-            this.y = y;
+        public Position(int r, int c) {
+            this.r = r;
+            this.c = c;
+        }
+
+        public Position(Position pos) {
+            this.r = pos.r;
+            this.c = pos.c;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + this.r + ", " + this.c + ")";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Position position = (Position) o;
+            return r == position.r && c == position.c;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(r, c);
         }
     }
 
@@ -19,6 +42,7 @@ class Navigator {
     private int startIndex, currentIndex;
     private Map<String, Set<Position>> pathTraversed;
     public boolean trappedInLoop;
+    public boolean escaped;
 
     public Navigator(char[][] grid, char obstacle, char startDirection) {
         this.maze = grid;
@@ -26,6 +50,9 @@ class Navigator {
         this.mazeWidth = grid[0].length;
         this.obstacle = obstacle;
 
+        // directions is a list of method references.
+        // these four methods implement a functional interface Direction (custom, defined below)
+        // in nextStep(), they are polled and move() is called on them
         this.directions = Arrays.asList(this::goUp, this::goRight, this::goDown, this::goLeft);
         this.startIndex = getDirectionIndex(startDirection);
         this.currentIndex = this.startIndex;
@@ -36,6 +63,7 @@ class Navigator {
         }
 
         this.trappedInLoop = false;
+        this.escaped = false;
     }
 
     private int getDirectionIndex(char direction) {
@@ -52,28 +80,28 @@ class Navigator {
         }
     }
 
-    private boolean isEscaping(int x, int y) {
-        return x < 0 || x >= mazeHeight || y < 0 || y >= mazeWidth;
+    private boolean isEscaping(int r, int c) {
+        return r < 0 || r >= mazeHeight || c < 0 || c >= mazeWidth;
     }
 
-    private boolean isValidMove(int x, int y) {
-        return maze[x][y] != obstacle;
+    private boolean isValidMove(int r, int c) {
+        return maze[r][c] != obstacle;
     }
 
     private Position goUp(Position pos) {
-        return new Position(pos.x - 1, pos.y);
+        return new Position(pos.r - 1, pos.c);
     }
 
     private Position goRight(Position pos) {
-        return new Position(pos.x, pos.y + 1);
+        return new Position(pos.r, pos.c + 1);
     }
 
     private Position goDown(Position pos) {
-        return new Position(pos.x + 1, pos.y);
+        return new Position(pos.r + 1, pos.c);
     }
 
     private Position goLeft(Position pos) {
-        return new Position(pos.x, pos.y - 1);
+        return new Position(pos.r, pos.c - 1);
     }
 
     public Position nextStep(Position currentPos) {
@@ -81,12 +109,14 @@ class Navigator {
             Direction dir = directions.get((currentIndex + i) % 4);
             Position newPos = dir.move(currentPos);
 
-            if (isEscaping(newPos.x, newPos.y)) {
+            if (isEscaping(newPos.r, newPos.c)) {
+                this.escaped = true;
                 return newPos;
             }
-            if (isValidMove(newPos.x, newPos.y)) {
+            if (isValidMove(newPos.r, newPos.c)) {
                 currentIndex = directions.indexOf(dir);
                 trappedInLoop = isCycle(dir, newPos);
+                this.escaped = false;
                 return newPos;
             }
         }
