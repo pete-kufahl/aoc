@@ -5,10 +5,10 @@
 | 2024 - 1: Distance between lists  | ✅   |  ✅    |  ✅     | ✅  |         | |
 | 2024 - 2: Radiation levels        | ✅   |  ✅    |  ✅     | ✅  |         | |
 | 2024 - 3: Process corrupted code  | ✅   |  ✅    |  ✅     | ✅  |         | regex match groups |
-| 2024 - 4: Word search             | ✅   |  ✅    |         |     |         | DFS and topological sort |
-| 2024 - 5: Rules and sequences     | ✅   |  ✅    |         |     |         | |
+| 2024 - 4: Word search             | ✅   |  ✅    |         |     |         | set operations |
+| 2024 - 5: Rules and sequences     | ✅   |  ✅    |         |     |         | DFS and topological sort |
 | 2024 - 6: Maze traversal and trap | ✅   |  ✅    |         |     |         | cyclic data structure, functional interface |
-| 2024 - 7: Evaluate operators      |      |  ✅    |         |     |         | |
+| 2024 - 7: Evaluate operators      | ✅   |  ✅    |         |     |         | cartesian product, integer overflow |
 | 2024 - 8: Map antinodes           |      |  ✅    |         |     |         | |
 | 2024 - 9: Compact filesystem      |      |  ✅    |         |     |         | |
 | 2024 - 10: Trailhead scores       |      |  ✅    |         |     |         | |
