@@ -9,7 +9,7 @@
 | 2024 - 5: Rules and sequences     | ✅   |  ✅    |         |     |         | DFS and topological sort |
 | 2024 - 6: Maze traversal and trap | ✅   |  ✅    |         |     |         | cyclic data structure, functional interface |
 | 2024 - 7: Evaluate operators      | ✅   |  ✅    |         |     |         | cartesian product, integer overflow |
-| 2024 - 8: Map antinodes           |      |  ✅    |         |     |         | |
+| 2024 - 8: Map antinodes           | ✅   |  ✅    |         |     |         | |
 | 2024 - 9: Compact filesystem      |      |  ✅    |         |     |         | |
 | 2024 - 10: Trailhead scores       |      |  ✅    |         |     |         | |
 | 2024 - 11: Count stones           |      |  ✅    |         |     |         | |
