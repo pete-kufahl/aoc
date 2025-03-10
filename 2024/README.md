@@ -10,8 +10,8 @@
 | 2024 - 6: Maze traversal and trap | ✅   |  ✅    |         |     |         | cyclic data structure, functional interface |
 | 2024 - 7: Evaluate operators      | ✅   |  ✅    |         |     |         | cartesian product, integer overflow |
 | 2024 - 8: Map antinodes           | ✅   |  ✅    |         |     |         | |
-| 2024 - 9: Compact filesystem      |      |  ✅    |         |     |         | |
-| 2024 - 10: Trailhead scores       |      |  ✅    |         |     |         | |
+| 2024 - 9: Compact filesystem      | ✅   |  ✅    |         |     |         | |
+| 2024 - 10: Trailhead scores       | ✅   |  ✅    |         |     |         | DFS with stored path|
 | 2024 - 11: Count stones           |      |  ✅    |         |     |         | |
 | 2024 - 12: Area, perimeter, sides |      |  ✅    |         |     |         | |
 | 2024 - 13: Claw machine path      |      |  ✅    |         |     |         | |
