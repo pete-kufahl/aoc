@@ -1,5 +1,7 @@
 package common;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
 
@@ -48,6 +50,43 @@ public class GridReader {
             grid[i] = lines.get(i).toCharArray();
         }
         return grid;
+    }
+
+    /**
+    * Reads the file line by line, converts each character into an integer, and stores
+    * the grid as a list of lists.
+    */
+    public static List<List<Integer>> readIntegerGridFromFile(String filePath) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(filePath));
+        List<List<Integer>> intGrid = new ArrayList<>();
+
+        for (String line : lines) {
+            List<Integer> row = new ArrayList<>();
+            for (char ch : line.trim().toCharArray()) {
+                row.add(Character.getNumericValue(ch));
+            }
+            intGrid.add(row);
+        }
+
+        return intGrid;
+    }
+
+    /**
+     * Iterates through the grid to find all positions where the value matches startDigit
+     * and returns a list of coordinate pairs (int[]).
+     */
+    public static List<int[]> getStartingPoints(List<List<Integer>> grid, int startDigit) {
+        List<int[]> startPoints = new ArrayList<>();
+
+        for (int r = 0; r < grid.size(); r++) {
+            for (int c = 0; c < grid.get(r).size(); c++) {
+                if (grid.get(r).get(c) == startDigit) {
+                    startPoints.add(new int[]{r, c});
+                }
+            }
+        }
+
+        return startPoints;
     }
 
     public static void printGrid(char[][] grid) {
